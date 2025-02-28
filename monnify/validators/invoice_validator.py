@@ -17,7 +17,7 @@ class InvoiceCreationSchema(Schema):
     )
     customerEmail = fields.Email(required=True)
     paymentMethods = fields.List(fields.Str())
-    expiryDate = fields.Str(required=True,validate=[is_required_format])
+    expiryDate = fields.Str(required=True)
     redirectUrl = fields.Url(required=False)
     metaData = fields.Dict(keys=fields.Str())
     incomeSplitConfig = fields.List(fields.Nested(SplitConfigSchema), required=False)
