@@ -1,5 +1,6 @@
-from marshmallow import Schema, fields, validate
-from validators import SplitConfigSchema, is_numeric
+from marshmallow import Schema, fields, validate, validates_schema, ValidationError, post_load
+from . import is_numeric, SplitConfigSchema
+
 
 
 
@@ -7,9 +8,9 @@ from validators import SplitConfigSchema, is_numeric
 class InitTransactionSchema(Schema):
 
     paymentReference = fields.Str(required=True)
-    amount = fields.Decima(required=True)
-    customerName = fields.Str(required=True)
-    paymentDescription = fields.Str(required=True)
+    amount = fields.Decimal(required=True)
+    customerName = fields.Str()
+    paymentDescription = fields.Str(required=True, validate=[validate.Length(min=3)])
     currencyCode = fields.Str(required=True, default="NGN")
     contractCode = fields.Str(
         required=True, validate=[validate.Length(min=10), is_numeric]
@@ -19,6 +20,25 @@ class InitTransactionSchema(Schema):
     redirectUrl = fields.Url(required=False)
     metaData = fields.Dict(keys=fields.Str())
     incomeSplitConfig = fields.List(fields.Nested(SplitConfigSchema), required=False)
+
+    @validates_schema(skip_on_field_errors=False)
+    def validate_schema(self, data, **kwargs):
+        if data.get('incomeSplitConfig'):
+            for param in data.get('incomeSplitConfig'):
+                if param.get("splitPercentage") is None and param.get("splitAmount") is None:
+                    raise ValidationError("Either splitPercentage or splitAmount is required")
+            
+    @post_load
+    def parse_decimal(self, item, many, **kwargs):
+        item["amount"] = str(item["amount"])
+        split_data = item.pop('incomeSplitConfig',None)
+        if split_data is not None:
+            for data in split_data:
+                if data.get('splitAmount'):
+                    data['splitAmount'] = str(data['splitAmount'])
+            item['incomeSplitConfig'] = split_data
+
+        return item
 
 
 
@@ -32,7 +52,7 @@ class BankTransferSchema(Schema):
 class USSDPaymentSchema(Schema):
 
     transactionReference = fields.Str(required=True)
-    bankUssdCode = fields.Str(required=False, validate=[is_numeric])
+    bankUssdCode = fields.Str(required=True, validate=[is_numeric])
 
 
 
@@ -74,7 +94,7 @@ class ThreeDsSchema(Schema):
 class CardTokenSchema(Schema):
 
     paymentReference = fields.Str(required=True)
-    amount = fields.Decima(required=True)
+    amount = fields.Decimal(required=True)
     customerName = fields.Str(required=True)
     paymentDescription = fields.Str(required=True)
     cardToken = fields.Str(required=True)

@@ -1,7 +1,7 @@
-from base import Base
+from ..base import Base
 from urllib import parse as url_encoder
 
-from validators.invoice_validator import InvoiceCreationSchema
+from ..validators.invoice_validator import InvoiceCreationSchema
 
 
 class Invoice(Base):
@@ -15,7 +15,7 @@ class Invoice(Base):
 
     def create_invoice(self, auth_token, data) -> tuple:
 
-        validated_data = InvoiceCreationSchema.load(data)
+        validated_data = InvoiceCreationSchema().load(data)
 
         url_path = "/api/v1/merchant/transactions/init-transaction"
         return self.do_post(url_path, auth_token, validated_data)

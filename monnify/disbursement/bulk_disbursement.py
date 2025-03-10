@@ -1,7 +1,7 @@
-from base import Base
+from monnify.base import Base
 from urllib import parse as url_encoder
 
-from validators.disbursement_validator import BulkTransferSchema, AuthorizeTransferSchema, ResendOTPSchema
+from monnify.validators.disbursement_validator import BulkTransferSchema, AuthorizeTransferSchema, ResendOTPSchema
 
 
 
@@ -37,11 +37,6 @@ class DisibursementBulk(Base):
 
         encoded_reference = url_encoder.quote_plus(reference)
         url_path = f"/api/v2/disbursements/bulk/{encoded_reference}/transactions"
-        return self.do_get(url_path, auth_token)
-    
-    def list_all_transfers(self, auth_token, page=0, size=10):
-
-        url_path = f'/api/v2/disbursements/bulk/transactions?pageNo={page}&pageSize={size}'
         return self.do_get(url_path, auth_token)
     
     def search_transactions(self, auth_token, wallet_account_number):

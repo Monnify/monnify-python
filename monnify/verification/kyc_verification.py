@@ -1,7 +1,6 @@
-from base import Base
-from urllib import parse as url_encoder
+from monnify.base import Base
 
-from validators.verification_validator import BVNMatchSchema, BVNVerificationSchema,NINVerificationSchema
+from monnify.validators.verification_validator import BVNMatchSchema, BVNVerificationSchema, NINVerificationSchema
 
 
 

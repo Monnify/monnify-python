@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validates_schema, ValidationError, validate
 
-from validators import is_numeric
+from . import is_numeric
 
 
 

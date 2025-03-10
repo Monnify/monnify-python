@@ -1,7 +1,7 @@
-from base import Base
+from monnify.base import Base
 from urllib import parse as url_encoder
 
-from validators.settlement_validator import SubAccountSchema
+from monnify.validators.settlement_validator import SubAccountSchema, UpdateSubSchema
 
 
 
@@ -19,7 +19,7 @@ class Settlement(Base):
 
     def create_sub_account(self, auth_token, data):
     
-        validated_data = SubAccountSchema.load(data)
+        validated_data = SubAccountSchema().load(data)
 
         url_path = "/api/v1/sub-accounts"
         return self.do_post(url_path, auth_token, validated_data)
@@ -27,7 +27,7 @@ class Settlement(Base):
 
     def update_sub_account(self, auth_token, data):
 
-        validated_data = SubAccountSchema.load(data)
+        validated_data = UpdateSubSchema().load(data)
 
         url_path = "/api/v1/sub-accounts"
         return self.do_put(url_path, auth_token, validated_data)

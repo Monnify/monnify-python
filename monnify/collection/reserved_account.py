@@ -1,6 +1,6 @@
-from base import Base
+from ..base import Base
 from urllib import parse as url_encoder
-from validators.reserved_account_validator import (
+from ..validators.reserved_account_validator import (
     ReservedAccountCreationSchema,
     AddLinkedReservedAccountSchema,
     UpdateKYCInfoSchema,
@@ -18,14 +18,14 @@ class ReservedAccount(Base):
 
     def create_reserved_acount(self: object, auth_token: str, data: dict) -> tuple:
 
-        validated_data = ReservedAccountCreationSchema.load(data)
+        validated_data = ReservedAccountCreationSchema().load(data)
         url_path = "/api/v2/bank-transfer/reserved-accounts"
         return self.do_post(url_path, auth_token, validated_data)
 
     def add_linked_accounts(self, auth_token, data) -> tuple:
 
-        validated_data = AddLinkedReservedAccountSchema.load(data)
-        encoded_reference = url_encoder.quote_plus(validated_data["account_reference"])
+        validated_data = AddLinkedReservedAccountSchema().load(data)
+        encoded_reference = url_encoder.quote_plus(validated_data["accountReference"])
         url_path = (
             "/api/v1/bank-transfer/reserved-accounts/add-linked-accounts/"
             + encoded_reference
@@ -36,7 +36,7 @@ class ReservedAccount(Base):
 
         encoded_reference = url_encoder.quote_plus(account_reference)
         url_path = (
-            "/api/v1/bank-transfer/reserved-accounts/add-linked-accounts/"
+            "/api/v2/bank-transfer/reserved-accounts/"
             + encoded_reference
         )
         return self.do_get(url_path, auth_token)
@@ -51,9 +51,9 @@ class ReservedAccount(Base):
 
     def update_reserved_account_kyc_info(self, auth_token, data) -> tuple:
 
-        validated_data = UpdateKYCInfoSchema.load(data)
+        validated_data = UpdateKYCInfoSchema().load(data)
 
-        encoded_reference = url_encoder.quote_plus(validated_data["account_reference"])
+        encoded_reference = url_encoder.quote_plus(validated_data["accountReference"])
         url_path = (
             "/api/v1/bank-transfer/reserved-accounts/" + encoded_reference + "/kyc-info"
         )

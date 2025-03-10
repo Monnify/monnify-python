@@ -1,7 +1,7 @@
-from base import Base
+from monnify.base import Base
 from urllib import parse as url_encoder
 
-from validators.disbursement_validator import SingleTransferSchema, AuthorizeTransferSchema,ResendOTPSchema
+from monnify.validators.disbursement_validator import SingleTransferSchema, AuthorizeTransferSchema, ResendOTPSchema
 
 
 class DisbursementSingle(Base):
@@ -14,7 +14,7 @@ class DisbursementSingle(Base):
 
     def initiate_transfer(self, auth_token, data):
 
-        validated_data = SingleTransferSchema.load(data)
+        validated_data = SingleTransferSchema().load(data)
 
         url_path = "/api/v2/disbursements/single"
         return self.do_post(url_path, auth_token, validated_data)
@@ -22,7 +22,7 @@ class DisbursementSingle(Base):
 
     def authorize_transfer(self, auth_token, data):
 
-        validated_data = AuthorizeTransferSchema.load(data)
+        validated_data = AuthorizeTransferSchema().load(data)
 
         url_path = "/api/v2/disbursements/single/validate-otp"
         return self.do_post(url_path, auth_token, validated_data)
@@ -30,7 +30,7 @@ class DisbursementSingle(Base):
     
     def resend_otp(self, auth_token, data):
 
-        validated_data = ResendOTPSchema.load(data)
+        validated_data = ResendOTPSchema().load(data)
         
         url_path = "/api/v2/disbursements/single/resend-otp"
         return self.do_post(url_path, auth_token, validated_data)

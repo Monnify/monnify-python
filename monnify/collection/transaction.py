@@ -1,7 +1,7 @@
-from base import Base
+from ..base import Base
 from urllib import parse as url_encoder
 
-from validators.transaction_validator import (
+from ..validators.transaction_validator import (
     InitTransactionSchema, 
     BankTransferSchema, 
     ChargeCardSchema,
@@ -22,7 +22,7 @@ class Transaction(Base):
 
     def initialize_transaction(self, auth_token, data) -> tuple:
 
-        validated_data = InitTransactionSchema.load(data)
+        validated_data = InitTransactionSchema().load(data)
         url_path = "/api/v1/merchant/transactions/init-transaction"
         return self.do_post(url_path, auth_token, validated_data)
 
@@ -55,7 +55,7 @@ class Transaction(Base):
 
     def pay_with_ussd(self, auth_token, data) -> tuple:
 
-        validated_data = USSDPaymentSchema.load(data)
+        validated_data = USSDPaymentSchema().load(data)
 
         url_path = "/api/v1/merchant/ussd/initialize"
         return self.do_post(url_path, auth_token, validated_data)
@@ -63,7 +63,7 @@ class Transaction(Base):
 
     def pay_with_bank_transfer(self, auth_token, data) -> tuple:
 
-        validated_data = BankTransferSchema.load(data)
+        validated_data = BankTransferSchema().load(data)
 
         url_path = "/api/v1/merchant/bank-transfer/init-payment"
         return self.do_post(url_path, auth_token, validated_data)
@@ -71,7 +71,7 @@ class Transaction(Base):
 
     def charge_card(self, auth_token, data) -> tuple:
 
-        validated_data = ChargeCardSchema.load(data)
+        validated_data = ChargeCardSchema().load(data)
 
         url_path = "/api/v1/merchant/cards/charge"
         return self.do_post(url_path, auth_token, validated_data)
@@ -79,7 +79,7 @@ class Transaction(Base):
 
     def authorize_otp(self, auth_token, data) -> tuple:
 
-        validated_data = AuthorizeOTPSchema.load(data)
+        validated_data = AuthorizeOTPSchema().load(data)
 
         url_path = "/api/v1/merchant/cards/otp/authorize"
         return self.do_post(url_path, auth_token, validated_data)
@@ -87,7 +87,7 @@ class Transaction(Base):
 
     def three_d_secure_auth_transaction(self, auth_token, data) -> tuple:
 
-        validated_data = ThreeDsSchema.load(data)
+        validated_data = ThreeDsSchema().load(data)
 
         url_path = "/api/v1/sdk/cards/secure-3d/authorize"
         return self.do_post(url_path, auth_token, validated_data)
@@ -95,7 +95,7 @@ class Transaction(Base):
 
     def card_tokenization(self, auth_token, data) -> tuple:
 
-        validated_data = CardTokenSchema.load(data)
+        validated_data = CardTokenSchema().load(data)
 
         url_path = "/api/v1/merchant/cards/charge-card-token"
         return self.do_post(url_path, auth_token, validated_data)

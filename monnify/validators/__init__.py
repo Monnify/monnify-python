@@ -1,5 +1,10 @@
 from marshmallow import Schema, fields, validates_schema, ValidationError, validate
 
+'''from .invoice_validator import *
+from .reserved_account_validator import *
+from .transaction_validator import *
+from .settlement_validator import *'''
+
 
 
 
@@ -18,9 +23,3 @@ class SplitConfigSchema(Schema):
     feePercentage = fields.Float()
     splitPercentage = fields.Float()
     splitAmount = fields.Decimal(rounding=2)
-
-    @validates_schema
-    def validate_schema(self, data, **kwargs):
-
-        if data.get("splitPercentage") and data.get("splitAmount"):
-            raise ValidationError("Either splitPercentage or splitAmount is required")
