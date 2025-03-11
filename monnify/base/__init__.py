@@ -10,18 +10,24 @@ from monnify.exceptions import UnprocessableRequestException, GatewayException, 
 
 class Base:
 
-    _instances = {}
+    _instance = []
 
     def __new__(cls, API_KEY: str = None, SECRET_KEY: str = None, ENV: str = "SANDBOX"):
-        if len(cls._instances) == 0:
+        if len(cls._instance)==0:
             instance = super().__new__(cls)
             instance.__init__(API_KEY, SECRET_KEY, ENV)
-            cls._instances[ENV] = instance
+            cls._instance.append(instance)
+            return instance
+        elif cls._instance and (cls._instance[0].__env != ENV or cls._instance[0].__api_key != API_KEY):
+            raise DuplicateInstanceException("You can't instantiate multiple classes with different environments")
         else:
-            if list(cls._instances.values())[0].__env != ENV:
-                raise DuplicateInstanceException("You can't instantiate multiple classes with different environments")
-            return cls._instances[ENV]
-        return instance
+            instance = super().__new__(cls)
+            instance.__init__(API_KEY, SECRET_KEY, ENV)
+            return instance
+        #     if list(cls._instances.values())[0].__env != ENV:
+        #         raise DuplicateInstanceException("You can't instantiate multiple classes with different environments")
+        #     return cls._instances[ENV]
+        # return instance
     
 
     def __init__(self: object, API_KEY: str = None, SECRET_KEY: str = None, ENV: str = "SANDBOX") -> None:
