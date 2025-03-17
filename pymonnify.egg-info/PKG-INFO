@@ -17,8 +17,23 @@ Description: # pymonnify
         
         To install the library, use pip:
         
+        After publication do:
+        
         ```sh
-        pip install pymonnify
+        pip install pymonnify 
+        ```
+        
+        For testing do:
+        ```sh
+        git clone https://github.com/Monnify/pymonnify
+        
+        cd pymonnify
+        
+        python3 -m venv dev
+        
+        source dev/bin/activate
+        
+        pip install .
         ```
         
         ## Usage
@@ -137,12 +152,6 @@ Description: # pymonnify
         status_code, response = verification.verify_bvn(auth_token, data)
         ```
 Platform: UNKNOWN
-Classifier: Programming Language :: Python :: 3.0
-Classifier: Programming Language :: Python :: 3.1
-Classifier: Programming Language :: Python :: 3.2
-Classifier: Programming Language :: Python :: 3.3
-Classifier: Programming Language :: Python :: 3.4
-Classifier: Programming Language :: Python :: 3.5
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.8
@@ -150,5 +159,5 @@ Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3
+Requires-Python: >=3.6
 Description-Content-Type: text/markdown

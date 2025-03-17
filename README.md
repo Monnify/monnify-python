@@ -46,7 +46,8 @@ The Transaction class provides methods to handle transactions.
 transaction = monnify.Transaction
 
 # Initialize a transaction
-auth_token = "your_auth_token"
+_, auth_token = transaction.get_auth_token()
+
 data = {
     "paymentReference": "unique_reference",
     "amount": 1000,
@@ -72,7 +73,8 @@ The ReservedAccount class provides methods to handle reserved accounts.
 reserved_account = monnify.ReservedAccount
 
 # Create a reserved account
-auth_token = "your_auth_token"
+_, auth_token = reserved_account.get_auth_token()
+
 data = {
     "accountReference": "unique_reference",
     "accountName": "Test Account",
@@ -96,7 +98,8 @@ The DisbursementSingle and DisibursementBulk classes provide methods to handle s
 single_disbursement = monnify.DisbursementSingle
 
 # Initiate a single transfer
-auth_token = "your_auth_token"
+_, auth_token = single_disbursement.get_auth_token()
+
 data = {
     "reference": "unique_reference",
     "amount": 1000,
@@ -116,7 +119,8 @@ The Settlement class provides methods to handle settlements.
 settlement = monnify.Settlement
 
 # Create a sub-account
-auth_token = "your_auth_token"
+_, auth_token = settlement.get_auth_token()
+
 data = {
     "bankCode": "057",
     "accountNumber": "1234567890",
@@ -134,7 +138,8 @@ The Verification class provides methods to handle verifications such as BVN, NIN
 verification = monnify.Verification
 
 # Verify BVN
-auth_token = "your_auth_token"
+_, auth_token = verification.get_auth_token()
+
 data = {
     "bvn": "12345678901",
     "name": "John Doe",

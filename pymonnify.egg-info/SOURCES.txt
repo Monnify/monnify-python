@@ -29,4 +29,5 @@ monnify/verification/kyc_verification.py
 pymonnify.egg-info/PKG-INFO
 pymonnify.egg-info/SOURCES.txt
 pymonnify.egg-info/dependency_links.txt
+pymonnify.egg-info/requires.txt
 pymonnify.egg-info/top_level.txt

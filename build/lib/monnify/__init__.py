@@ -23,5 +23,5 @@ class Monnify:
         ]
 
         for cls_ in classes:
-            instance = cls_(API_KEY=None, SECRET_KEY=None, ENV="SANDBOX")
+            instance = cls_(API_KEY=API_KEY, SECRET_KEY=SECRET_KEY, ENV=ENV)
             setattr(self, cls_.__name__, instance)
