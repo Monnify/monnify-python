@@ -11,25 +11,25 @@ Classes
         reference (str): The reference for the transfer.
         authorizationCode (str): The authorization code for the transfer.
 
-    ### Ancestors (in MRO)
+### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+* marshmallow.schema.Schema
+* marshmallow.base.SchemaABC
+* abc.ABC
 
-    ### Class variables
+### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+`OPTIONS_CLASS: type`
+:   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+`TYPE_MAPPING: dict[type, type[Field]]`
+:
 
-    `error_messages: dict[str, str]`
-    :
+`error_messages: dict[str, str]`
+:
 
-    `opts: typing.Any`
-    :
+`opts: typing.Any`
+:
 
 `BulkTransferSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for bulk transfer.
@@ -44,41 +44,41 @@ Classes
         notificationInterval (int): Notification interval, default is 25.
         transactionList (list): List of transactions in the bulk transfer.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `Meta`
-    :
+  `Meta`
+  :
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
-    ### Methods
+  ### Methods
 
-    `parse_decimal(self, item, many, **kwargs)`
-    :   Post-load processing to convert decimal amount fields to string.
-        
-        Args:
-            item (dict): The loaded data.
-            many (bool): Whether the data is a list of items.
-            **kwargs: Additional keyword arguments.
-        
-        Returns:
-            dict: The processed data with amounts as strings.
+  `parse_decimal(self, item, many, **kwargs)`
+  :   Post-load processing to convert decimal amount fields to string.
+      
+      Args:
+          item (dict): The loaded data.
+          many (bool): Whether the data is a list of items.
+          **kwargs: Additional keyword arguments.
+      
+      Returns:
+          dict: The processed data with amounts as strings.
 
 `ResendOTPSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for resending OTP.
@@ -86,25 +86,25 @@ Classes
     Attributes:
         reference (str): The reference for the OTP resend request.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
 `SingleTransferSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for validating single transfer disbursement payload.
@@ -118,30 +118,30 @@ Classes
         sourceAccountNumber (str): The wallet account number of the source account.
         currency (str): Currency of the transfer, default is "NGN".
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `Meta`
-    :
+  `Meta`
+  :
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
-    ### Methods
+  ### Methods
 
-    `parse_decimal(self, item, many, **kwargs)`
-    :
+  `parse_decimal(self, item, many, **kwargs)`
+  :

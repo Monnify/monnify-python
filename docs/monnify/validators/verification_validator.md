@@ -12,25 +12,25 @@ Classes
         bankCode (str): The bank code of the bank linked to the account number, must be numeric.
         accountNumber (str): The account number, must be exactly 10 digits.
 
-    ### Ancestors (in MRO)
+### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+* marshmallow.schema.Schema
+* marshmallow.base.SchemaABC
+* abc.ABC
 
-    ### Class variables
+### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+`OPTIONS_CLASS: type`
+:   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+`TYPE_MAPPING: dict[type, type[Field]]`
+:
 
-    `error_messages: dict[str, str]`
-    :
+`error_messages: dict[str, str]`
+:
 
-    `opts: typing.Any`
-    :
+`opts: typing.Any`
+:
 
 `BVNVerificationSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for BVN (Bank Verification Number) verification.
@@ -41,25 +41,25 @@ Classes
         mobileNo (str): The mobile number of the customer, must be exactly 11 digits.
         dateOfBirth (str): The date of birth of the customer.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
 `NINVerificationSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for NIN (National Identification Number) verification.
@@ -67,22 +67,22 @@ Classes
     Attributes:
         nin (str): The NIN number, must be exactly 11 digits.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :

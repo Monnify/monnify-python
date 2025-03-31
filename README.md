@@ -173,3 +173,7 @@ data = {
 }
 status_code, response = verification.verify_bvn(auth_token, data)
 ```
+
+## Documentation
+
+You can view full library documentation [here](docs/monnify/index.md)

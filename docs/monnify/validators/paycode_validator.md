@@ -14,27 +14,27 @@ Classes
         clientId (str): The merchant API key.
         expiryDate (str): The expiry date of the paycode.
 
-    ### Ancestors (in MRO)
+### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+* marshmallow.schema.Schema
+* marshmallow.base.SchemaABC
+* abc.ABC
 
-    ### Class variables
+### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+`OPTIONS_CLASS: type`
+:   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+`TYPE_MAPPING: dict[type, type[Field]]`
+:
 
-    `error_messages: dict[str, str]`
-    :
+`error_messages: dict[str, str]`
+:
 
-    `opts: typing.Any`
-    :
+`opts: typing.Any`
+:
 
-    ### Methods
+### Methods
 
-    `parse_decimal(self, item, many, **kwargs)`
-    :
+`parse_decimal(self, item, many, **kwargs)`
+:

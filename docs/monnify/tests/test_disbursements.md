@@ -7,80 +7,80 @@ Classes
 `TestBulkDisbursementAPIs()`
 :   
 
-    ### Methods
+### Methods
 
-    `get_reference(self)`
-    :
+`get_reference(self)`
+:
 
-    `initialise_data(self)`
-    :
+`initialise_data(self)`
+:
 
-    `instantiate_class(self)`
-    :
+`instantiate_class(self)`
+:
 
-    `test_search_transaction(self)`
-    :
+`test_search_transaction(self)`
+:
 
-    `test_transfer(self)`
-    :
+`test_transfer(self)`
+:
 
-    `test_transfer_status(self, get_reference)`
-    :
+`test_transfer_status(self, get_reference)`
+:
 
 `TestPaycodeAPIs()`
 :   
 
-    ### Methods
+### Methods
 
-    `get_reference(self)`
-    :
+`get_reference(self)`
+:
 
-    `initialise_data(self)`
-    :
+`initialise_data(self)`
+:
 
-    `instantiate_class(self)`
-    :
+`instantiate_class(self)`
+:
 
-    `test_create_paycode(self)`
-    :
+`test_create_paycode(self)`
+:
 
-    `test_delete_paycode(self, get_reference)`
-    :
+`test_delete_paycode(self, get_reference)`
+:
 
-    `test_get_clear_paycode(self, get_reference)`
-    :
+`test_get_clear_paycode(self, get_reference)`
+:
 
-    `test_get_paycode(self, get_reference)`
-    :
+`test_get_paycode(self, get_reference)`
+:
 
 `TestSingleDisbursementAPIs()`
 :   
 
-    ### Methods
+### Methods
 
-    `get_reference(self)`
-    :
+`get_reference(self)`
+:
 
-    `initialise_data(self)`
-    :
+`initialise_data(self)`
+:
 
-    `instantiate_class(self)`
-    :
+`instantiate_class(self)`
+:
 
-    `test_authorize_transfer(self, get_reference)`
-    :
+`test_authorize_transfer(self, get_reference)`
+:
 
-    `test_list_transfers(self)`
-    :
+`test_list_transfers(self)`
+:
 
-    `test_resend_otp(self, get_reference)`
-    :
+`test_resend_otp(self, get_reference)`
+:
 
-    `test_transfer(self)`
-    :
+`test_transfer(self)`
+:
 
-    `test_transfer_status(self, get_reference)`
-    :
+`test_transfer_status(self, get_reference)`
+:
 
-    `test_wallet_balance(self)`
-    :
+`test_wallet_balance(self)`
+:

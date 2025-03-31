@@ -13,25 +13,25 @@ Classes
         tokenId (str): The token ID, gotten from the charge card endpoint.
         token (str): The token, required and must be numeric.
 
-    ### Ancestors (in MRO)
+### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+* marshmallow.schema.Schema
+* marshmallow.base.SchemaABC
+* abc.ABC
 
-    ### Class variables
+### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+`OPTIONS_CLASS: type`
+:   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+`TYPE_MAPPING: dict[type, type[Field]]`
+:
 
-    `error_messages: dict[str, str]`
-    :
+`error_messages: dict[str, str]`
+:
 
-    `opts: typing.Any`
-    :
+`opts: typing.Any`
+:
 
 `BankTransferSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for bank transfer transactions.
@@ -40,25 +40,25 @@ Classes
         transactionReference (str): The Monnify transaction reference, gotten from the transaction init endpoint
         bankCode (str): The bank code to generate USSD string for the returnd account number
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
 `CardSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for card details.
@@ -70,25 +70,25 @@ Classes
         pin (str): The card PIN, required with a length of 4 and must be numeric.
         cvv (str): The card CVV, required with a length of 3 and must be numeric.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
 `CardTokenSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for card token transactions.
@@ -108,30 +108,30 @@ Classes
     Methods:
         parse_decimal(item, many, **kwargs): Converts amount to string after loading.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
-    ### Methods
+  ### Methods
 
-    `parse_decimal(self, item, many, **kwargs)`
-    :
+  `parse_decimal(self, item, many, **kwargs)`
+  :
 
 `ChargeCardSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for charging a card.
@@ -142,25 +142,25 @@ Classes
         card (CardSchema): The card details, required.
         deviceInformation (dict): Device information dictionary with string keys, required.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
 `InitTransactionSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for initializing a transaction.
@@ -182,33 +182,33 @@ Classes
         validate_schema(data, **kwargs): Validates the schema to ensure either splitPercentage or splitAmount is provided in incomeSplitConfig.
         parse_decimal(item, many, **kwargs): Converts amount and splitAmount to string after loading.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
-    ### Methods
+  ### Methods
 
-    `parse_decimal(self, item, many, **kwargs)`
-    :
+  `parse_decimal(self, item, many, **kwargs)`
+  :
 
-    `validate_schema(self, data, **kwargs)`
-    :
+  `validate_schema(self, data, **kwargs)`
+  :
 
 `RefundSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for refunding transactions.
@@ -227,30 +227,30 @@ Classes
     Methods:
         parse_decimal(item, many, **kwargs): Converts amount to string after loading.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
-    ### Methods
+  ### Methods
 
-    `parse_decimal(self, item, many, **kwargs)`
-    :
+  `parse_decimal(self, item, many, **kwargs)`
+  :
 
 `ThreeDsSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for 3D secure transactions.
@@ -261,25 +261,25 @@ Classes
         apikey (str): The API key, required.
         card (CardSchema): The card details, required.
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :
 
 `USSDPaymentSchema(*, only: types.StrSequenceOrSet | None = None, exclude: types.StrSequenceOrSet = (), many: bool | None = None, context: dict | None = None, load_only: types.StrSequenceOrSet = (), dump_only: types.StrSequenceOrSet = (), partial: bool | types.StrSequenceOrSet | None = None, unknown: str | None = None)`
 :   Schema for USSD payment transactions.
@@ -288,22 +288,22 @@ Classes
         transactionReference (str): The Monnify transaction reference, gotten from the transaction init endpoint
         bankUssdCode (str): The bank USSD code for the bank customer is paying from
 
-    ### Ancestors (in MRO)
+  ### Ancestors (in MRO)
 
-    * marshmallow.schema.Schema
-    * marshmallow.base.SchemaABC
-    * abc.ABC
+  * marshmallow.schema.Schema
+  * marshmallow.base.SchemaABC
+  * abc.ABC
 
-    ### Class variables
+  ### Class variables
 
-    `OPTIONS_CLASS: type`
-    :   Defines defaults for `marshmallow.Schema.Meta`.
+  `OPTIONS_CLASS: type`
+  :   Defines defaults for `marshmallow.Schema.Meta`.
 
-    `TYPE_MAPPING: dict[type, type[Field]]`
-    :
+  `TYPE_MAPPING: dict[type, type[Field]]`
+  :
 
-    `error_messages: dict[str, str]`
-    :
+  `error_messages: dict[str, str]`
+  :
 
-    `opts: typing.Any`
-    :
+  `opts: typing.Any`
+  :

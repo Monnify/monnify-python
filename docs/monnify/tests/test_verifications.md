@@ -7,13 +7,13 @@ Classes
 `TestSettlementAPIs()`
 :   
 
-    ### Methods
+### Methods
 
-    `initialise_data(self)`
-    :
+`initialise_data(self)`
+:
 
-    `instantiate_class(self)`
-    :
+`instantiate_class(self)`
+:
 
-    `test_account_validation(self)`
-    :
+`test_account_validation(self)`
+:
