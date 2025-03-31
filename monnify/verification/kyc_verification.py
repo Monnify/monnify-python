@@ -18,7 +18,7 @@ class Verification(Base):
 
         super().__init__(API_KEY, SECRET_KEY, ENV)
 
-    def verify_bvn(self, auth_token, data):
+    def verify_bvn(self, data, auth_token=None):
         """
         Verify BVN (Bank Verification Number) details.
 
@@ -40,9 +40,9 @@ class Verification(Base):
         validated_data = BVNVerificationSchema().load(data)
 
         url_path = "/api/v1/vas/bvn-details-match"
-        return self.do_post(url_path, auth_token, data)
+        return self.do_post(url_path, data, auth_token)
 
-    def match_bvn_with_account_name(self, auth_token, data):
+    def match_bvn_with_account_name(self, data, auth_token=None):
         """
         Matches a BVN (Bank Verification Number) with the supplied account name.
 
@@ -60,9 +60,9 @@ class Verification(Base):
         validated_data = BVNMatchSchema().load(data)
 
         url_path = "/api/v1/vas/bvn-account-match"
-        return self.do_post(url_path, auth_token, data)
+        return self.do_post(url_path, data, auth_token)
 
-    def verify_nin(self, auth_token, data):
+    def verify_nin(self, data, auth_token=None):
         """
         This method verifies the NIN supplied by the customer.
 
@@ -78,9 +78,9 @@ class Verification(Base):
         validated_data = NINVerificationSchema().load(data)
 
         url_path = "/api/v1/vas/nin-details"
-        return self.do_post(url_path, auth_token, data)
+        return self.do_post(url_path, data, auth_token)
 
-    def validate_bank_account(self, auth_token, account_number, bank_code):
+    def validate_bank_account(self, account_number, bank_code, auth_token=None):
         """
         Validate a bank account using the provided account number and bank code.
 

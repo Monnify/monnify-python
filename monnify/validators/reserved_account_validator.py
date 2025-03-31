@@ -24,6 +24,7 @@ class ReservedAccountCreationSchema(Schema):
         bvn (str): Bank Verification Number, must be numeric with a length of 11.
         nin (str): National Identification Number, must be numeric with a length of 11.
         getAllAvailableBanks (bool): Flag to get all available banks, required and default is True.
+        reservedAccountType (str): Type of reserved account, default is "INVOICE".
         preferredBanks (list): List of preferred banks, must be numeric.
         incomeSplitConfig (list): List of income split configurations, optional.
         restrictPaymentSource (bool): Flag to restrict payment source, optional and default is False.
@@ -41,6 +42,7 @@ class ReservedAccountCreationSchema(Schema):
     bvn = fields.Str(validate=[validate.Length(min=11, max=11), is_numeric])
     nin = fields.Str(validate=[validate.Length(min=11, max=11), is_numeric])
     getAllAvailableBanks = fields.Bool(required=True, default=True)
+    reservedAccountType = fields.Str(required=False)
     preferredBanks = fields.List(fields.Str(validate=[is_numeric]))
     incomeSplitConfig = fields.List(fields.Nested(SplitConfigSchema), required=False)
     restrictPaymentSource = fields.Bool(required=False, default=False)
@@ -69,15 +71,15 @@ class ReservedAccountCreationSchema(Schema):
             raise ValidationError(
                 "allowedPaymentSource is required when restrictPaymentSource is True"
             )
-
-        for param in data.get("incomeSplitConfig"):
-            if (
-                param.get("splitPercentage") is None
-                and param.get("splitAmount") is None
-            ):
-                raise ValidationError(
-                    "Either splitPercentage or splitAmount is required"
-                )
+        if data.get("incomeSplitConfig"):
+            for param in data.get("incomeSplitConfig"):
+                if (
+                    param.get("splitPercentage") is None
+                    and param.get("splitAmount") is None
+                ):
+                    raise ValidationError(
+                        "Either splitPercentage or splitAmount is required"
+                    )
 
     @post_load
     def parse_decimal(self, item, many, **kwargs):

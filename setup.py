@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pymonnify",
+    name="monnify-python",
     version="1.0.0",
     author="Marvelous-Benji",
     author_email="integration-support@monnify.com",

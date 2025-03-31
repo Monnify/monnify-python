@@ -1,6 +1,6 @@
 dev/
 script.py
-/dist/
-*.pyc
-/*.egg-info
-/*.egg
+dist/
+*.pyc/
+*.egg-info/
+*.egg/

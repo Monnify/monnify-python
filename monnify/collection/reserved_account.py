@@ -4,6 +4,7 @@ from ..validators.reserved_account_validator import (
     ReservedAccountCreationSchema,
     AddLinkedReservedAccountSchema,
     UpdateKYCInfoSchema,
+    SplitConfigSchema,
     ValidationError,
 )
 
@@ -19,7 +20,7 @@ class ReservedAccount(Base):
 
         super().__init__(API_KEY, SECRET_KEY, ENV)
 
-    def create_reserved_acount(self: object, auth_token: str, data: dict) -> tuple:
+    def create_reserved_account(self: object, data: dict, auth_token=None) -> tuple:
         """
         Creates reserved account.
 
@@ -50,9 +51,9 @@ class ReservedAccount(Base):
 
         validated_data = ReservedAccountCreationSchema().load(data)
         url_path = "/api/v2/bank-transfer/reserved-accounts"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def add_linked_accounts(self, auth_token, data) -> tuple:
+    def add_linked_accounts(self, data, auth_token=None) -> tuple:
         """
         Add linked accounts to a reserved account.
 
@@ -75,9 +76,9 @@ class ReservedAccount(Base):
             "/api/v1/bank-transfer/reserved-accounts/add-linked-accounts/"
             + encoded_reference
         )
-        return self.do_put(url_path, auth_token, validated_data)
+        return self.do_put(url_path, validated_data, auth_token)
 
-    def get_reserved_account_details(self, auth_token: str, account_reference: str):
+    def get_reserved_account_details(self, account_reference: str, auth_token=None) -> tuple:
         """
         Retrieve the details of a reserved account.
 
@@ -93,7 +94,7 @@ class ReservedAccount(Base):
         url_path = "/api/v2/bank-transfer/reserved-accounts/" + encoded_reference
         return self.do_get(url_path, auth_token)
 
-    def deallocate_reserved_account(self, auth_token, account_reference) -> tuple:
+    def deallocate_reserved_account(self, account_reference, auth_token=None) -> tuple:
         """
         Deallocates a reserved account.
 
@@ -114,7 +115,7 @@ class ReservedAccount(Base):
         )
         return self.do_delete(url_path, auth_token)
 
-    def update_reserved_account_kyc_info(self, auth_token, data) -> tuple:
+    def update_reserved_account_kyc_info(self, data, auth_token=None) -> tuple:
         """
         Update the BVN/NIN information for a reserved account.
 
@@ -138,10 +139,31 @@ class ReservedAccount(Base):
         url_path = (
             "/api/v1/bank-transfer/reserved-accounts/" + encoded_reference + "/kyc-info"
         )
-        return self.do_put(url_path, auth_token, validated_data)
+        return self.do_put(url_path, validated_data, auth_token)
+    
+    def update_split_config(self, account_reference, data, auth_token=None) -> tuple:
+        """
+        Update the income split configuration for a reserved account.
+
+        Args:
+            auth_token (str): The authentication token required for the API request.
+            accountReference (str): Reference for the reserved account, required.
+            data (dict): A list containing the income split configuration to be updated as outlined below:
+                incomeSplitConfig (list): dictionary of income split configurations.
+
+        Returns:
+            tuple: A tuple containing the response status and the response data from the API.
+        """
+        validated_data = SplitConfigSchema(many=True).load(data)
+
+        encoded_reference = url_encoder.quote_plus(account_reference)
+        url_path = (
+            f"/api/v1/bank-transfer/reserved-accounts/update-income-split-config/{encoded_reference}"
+        )
+        return self.do_put(url_path, validated_data, auth_token)
 
     def get_reserved_account_transactions(
-        self, auth_token, account_reference, page=0, size=10
+        self, account_reference, page=0, size=10, auth_token=None
     ):
         """
         Retrieve transactions for a reserved account.

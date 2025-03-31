@@ -9,6 +9,7 @@ from ..validators.transaction_validator import (
     ThreeDsSchema,
     CardTokenSchema,
     USSDPaymentSchema,
+    RefundSchema
 )
 
 
@@ -23,7 +24,7 @@ class Transaction(Base):
 
         super().__init__(API_KEY, SECRET_KEY, ENV)
 
-    def initialize_transaction(self, auth_token, data) -> tuple:
+    def initialize_transaction(self, data, auth_token=None) -> tuple:
         """
         Initializes a transaction 
 
@@ -49,9 +50,9 @@ class Transaction(Base):
 
         validated_data = InitTransactionSchema().load(data)
         url_path = "/api/v1/merchant/transactions/init-transaction"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def get_transaction_status_v2(self, auth_token, transaction_reference) -> tuple:
+    def get_transaction_status_v2(self, transaction_reference, auth_token=None) -> tuple:
         """
         Retrieve the status of a transaction using its reference.
 
@@ -67,8 +68,8 @@ class Transaction(Base):
         url_path = "/api/v2/transactions/" + encoded_reference
         return self.do_get(url_path, auth_token)
 
-    def get_transaction_status_v1(
-        self, auth_token, payment_reference=None, transaction_reference=None
+    def get_transaction_status(
+        self, payment_reference=None, transaction_reference=None, auth_token=None
     ) -> tuple:
         """
         Get the status of a transaction.
@@ -101,8 +102,24 @@ class Transaction(Base):
             + url_encoder.quote_plus(payment_reference)
         )
         return self.do_get(url_path, auth_token)
+    
+    def get_all_transactions(self, start_date, end_date, payment_status=None, page=0, size=10, auth_token=None) -> tuple:
+        """
+        Retrieve all transactions with pagination.
 
-    def pay_with_ussd(self, auth_token, data) -> tuple:
+        Args:
+            auth_token (str): The authentication token for the API.
+            page (int, optional): The page number to retrieve. Defaults to 0.
+            size (int, optional): The number of transactions per page. Defaults to 10.
+        """
+
+        url_path =( f"/api/v1/transactions/search?page={page}&size={size}&from={start_date}&to={end_date}"
+                   if payment_status is not None  
+                   else f"/api/v1/transactions/search?page={page}&size={size}&from={start_date}&to={end_date}&paymentStatus={payment_status}")        
+        return self.do_get(url_path, auth_token)
+    
+
+    def pay_with_ussd(self, data, auth_token=None) -> tuple:
         """
         Initialize a USSD payment.
 
@@ -123,9 +140,10 @@ class Transaction(Base):
         validated_data = USSDPaymentSchema().load(data)
 
         url_path = "/api/v1/merchant/ussd/initialize"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def pay_with_bank_transfer(self, auth_token, data) -> tuple:
+
+    def pay_with_bank_transfer(self, data, auth_token=None) -> tuple:
         """
         Initiates a payment using bank transfer.
 
@@ -141,9 +159,10 @@ class Transaction(Base):
         validated_data = BankTransferSchema().load(data)
 
         url_path = "/api/v1/merchant/bank-transfer/init-payment"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def charge_card(self, auth_token, data) -> tuple:
+
+    def charge_card(self, data, auth_token=None) -> tuple:
         """
         Charges a card using the provided authentication token and card data.
 
@@ -166,9 +185,10 @@ class Transaction(Base):
         validated_data = ChargeCardSchema().load(data)
 
         url_path = "/api/v1/merchant/cards/charge"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def authorize_otp(self, auth_token, data) -> tuple:
+
+    def authorize_otp(self, data, auth_token=None) -> tuple:
         """
         Authorizes an OTP for a transaction.
 
@@ -187,9 +207,10 @@ class Transaction(Base):
         validated_data = AuthorizeOTPSchema().load(data)
 
         url_path = "/api/v1/merchant/cards/otp/authorize"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def three_d_secure_auth_transaction(self, auth_token, data) -> tuple:
+
+    def three_d_secure_auth_transaction(self, data, auth_token=None) -> tuple:
         """
         Initiates a 3D Secure authentication transaction.
 
@@ -210,9 +231,10 @@ class Transaction(Base):
         validated_data = ThreeDsSchema().load(data)
 
         url_path = "/api/v1/sdk/cards/secure-3d/authorize"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def card_tokenization(self, auth_token, data) -> tuple:
+
+    def card_tokenization(self, data, auth_token=None) -> tuple:
         """
         Tokenizes a card for future transactions.
 
@@ -237,4 +259,77 @@ class Transaction(Base):
         validated_data = CardTokenSchema().load(data)
 
         url_path = "/api/v1/merchant/cards/charge-card-token"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
+
+
+class TransactionRefund(Base):
+    """
+    The Monnify Transaction Refund API class
+    """
+
+    def __init__(
+        self: object, API_KEY: str = None, SECRET_KEY: str = None, ENV: str = "SANDBOX"
+    ) -> None:
+
+        super().__init__(API_KEY, SECRET_KEY, ENV)
+
+
+    def initiate_refund(self, data, auth_token=None) -> tuple:
+        """
+        Refunds a transaction.
+
+        Args:
+            auth_token (str): The authentication token for the API request.
+            data (dict): The data required for the refund as outlined below:
+                transactionReference (str): The Monnify transaction reference for a completed transaction.
+                refundReference (str): The merchant uniquely generated refund reference, required.
+                customerNote (str): The customer's note, required with a maximum length of 16.
+                amount (Decimal): The refund amount, required.
+                currencyCode (str): The currency code, default is "NGN".
+                refundReason (str): The refund reason, required.
+                contractCode (str): The contract code, required with a minimum length of 10 and must be numeric.
+                destinationAcountNumber (str): The destination account number, optional with a minimum length of 10 and must be numeric.
+                destinationAccountBankCode (str): The destination account bank code, optional and must be numeric.
+            
+        Returns:
+            tuple: The response from the API call, typically containing the status and the response data.
+        """
+        validated_data = RefundSchema().load(data)
+
+        url_path = "/api/v1/refunds/initiate-refund"
+        return self.do_post(url_path, validated_data, auth_token)
+    
+
+    def get_refund_status(self, refund_reference, auth_token=None) -> tuple:
+        """
+        Retrieve the status of a refund using its refund reference.
+
+        Args:
+            auth_token (str): The authentication token for the API.
+            refund_reference (str): The Merchant generated refund reference for the refund.
+
+        Returns:
+            tuple: A tuple containing the response status and data from the API.
+        """
+
+        encoded_reference = url_encoder.quote_plus(refund_reference)
+        url_path = "/api/v1/refunds/" + encoded_reference
+        return self.do_get(url_path, auth_token)
+    
+    def get_all_refunds(self, start_date, end_date, page=0, size=10, auth_token=None):
+        """
+        Fetches all refunds within a specified date range.
+
+        Args:
+            auth_token (str): The authentication token for the API, defaults to None.
+            page (int, optional): The page number to retrieve. Defaults to 0.
+            size (int, optional): The number of refunds per page. Defaults to 10.
+            start_date (int): A unix timestamp in milliseconds of the start date for the refund search.
+            end_date (int): A unix timestamp in milliseconds of the end date for the refund search.
+
+        Returns:
+            tuple: A tuple containing the response status and data from the API.
+        """
+
+        url_path = f"/api/v1/refunds?page={page}&size={size}&from={start_date}&to={end_date}"
+        return self.do_get(url_path, auth_token)

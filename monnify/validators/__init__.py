@@ -14,7 +14,7 @@ def is_numeric(value):
 class SplitConfigSchema(Schema):
 
     subAccountCode = fields.Str(required=True)
-    feeBearer = fields.Bool(required=True, default=False)
+    feeBearer = fields.Bool(required=False, default=False)
     feePercentage = fields.Float()
     splitPercentage = fields.Float()
     splitAmount = fields.Decimal(rounding=2)

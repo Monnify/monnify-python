@@ -15,7 +15,7 @@ class Invoice(Base):
 
         super().__init__(API_KEY, SECRET_KEY, ENV)
 
-    def create_invoice(self, auth_token, data) -> tuple:
+    def create_invoice(self, data, auth_token=None) -> tuple:
         """
         Create an invoice using the provided authentication token and data.
 
@@ -43,10 +43,10 @@ class Invoice(Base):
         
         validated_data = InvoiceCreationSchema().load(data)
 
-        url_path = "/api/v1/merchant/transactions/init-transaction"
-        return self.do_post(url_path, auth_token, validated_data)
+        url_path = "/api/v1/invoice/create"
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def get_invoice_details(self, auth_token, invoice_reference) -> tuple:
+    def get_invoice_details(self, invoice_reference, auth_token=None) -> tuple:
         """
         Retrieve the details of a specific invoice.
 
@@ -62,7 +62,7 @@ class Invoice(Base):
         url_path = f"/api/v1/invoice/{encoded_reference}/details"
         return self.do_get(url_path, auth_token)
 
-    def get_all_invoices(self, auth_token, page=0, size=10):
+    def get_all_invoices(self, page=0, size=10, auth_token=None) -> tuple:
         """
         Retrieve all created invoices with pagination.
 
@@ -78,7 +78,7 @@ class Invoice(Base):
         url_path = f"/api/v1/invoice/all?page={page}&size={size}"
         return self.do_get(url_path, auth_token)
 
-    def cancel_invoice(self, auth_token, invoice_reference):
+    def cancel_invoice(self, invoice_reference, auth_token=None) -> tuple:
         """
         Cancel an invoice.
 
@@ -94,4 +94,4 @@ class Invoice(Base):
 
         encoded_reference = url_encoder.quote_plus(invoice_reference)
         url_path = f"/api/v1/invoice/{encoded_reference}/cancel"
-        return self.do_get(url_path, auth_token)
+        return self.do_delete(url_path, auth_token)

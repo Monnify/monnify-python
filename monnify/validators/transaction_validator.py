@@ -115,7 +115,7 @@ class CardSchema(Schema):
     expiryYear = fields.Str(
         required=True, validate=[validate.Length(min=4), is_numeric]
     )
-    pin = fields.Str(required=True, validate=[validate.Length(min=4), is_numeric])
+    pin = fields.Str(required=False, validate=[validate.Length(min=4), is_numeric])
     cvv = fields.Str(required=True, validate=[validate.Length(min=3), is_numeric])
 
 
@@ -166,7 +166,7 @@ class ThreeDsSchema(Schema):
 
     transactionReference = fields.Str(required=True)
     collectionChannel = fields.Str(required=True)
-    apikey = fields.Str(required=True)
+    apiKey = fields.Str(required=True)
     card = fields.Nested(CardSchema, required=True)
 
 
@@ -183,7 +183,7 @@ class CardTokenSchema(Schema):
         currencyCode (str): The currency code, default is "NGN".
         contractCode (str): The contract code, required with a minimum length of 10 and must be numeric.
         customerEmail (Email): The customer's email, required.
-        apikey (str): The API key, required.
+        apiKey (str): The API key, required.
         metaData (dict): Metadata dictionary with string keys.
 
     Methods:
@@ -200,8 +200,45 @@ class CardTokenSchema(Schema):
         required=True, validate=[validate.Length(min=10), is_numeric]
     )
     customerEmail = fields.Email(required=True)
-    apikey = fields.Str(required=True)
+    apiKey = fields.Str(required=True)
     metaData = fields.Dict(keys=fields.Str())
+
+    @post_load
+    def parse_decimal(self, item, many, **kwargs):
+        item["amount"] = str(item["amount"])
+        return item
+
+
+class RefundSchema(Schema):
+    """
+    Schema for refunding transactions.
+
+    Attributes:
+        transactionReference (str): The Monnify transaction reference for a completed transaction.
+        refundReference (str): The merchant uniquely generated refund reference, required.
+        customerNote (str): The customer's note, required with a maximum length of 16.
+        amount (Decimal): The refund amount, required.
+        currencyCode (str): The currency code, default is "NGN".
+        refundReason (str): The refund reason, required.
+        contractCode (str): The contract code, required with a minimum length of 10 and must be numeric.
+        destinationAcountNumber (str): The destination account number, optional with a minimum length of 10 and must be numeric.
+        destinationAccountBankCode (str): The destination account bank code, optional and must be numeric.
+
+    Methods:
+        parse_decimal(item, many, **kwargs): Converts amount to string after loading.
+    """
+
+    transactionReference = fields.Str(required=True)
+    refundReference = fields.Str(required=True)
+    customerNote = fields.Str(required=True, validate=[validate.Length(max=16)])
+    amount = fields.Decimal(required=True)
+    currencyCode = fields.Str(required=True, default="NGN")
+    refundReason = fields.Str(required=True)
+    contractCode = fields.Str(
+        required=True, validate=[validate.Length(min=10), is_numeric]
+    )
+    destinationAcountNumber = fields.Str(required=False, validate=[validate.Length(min=10), is_numeric])
+    destinationAccountBankCode = fields.Str(required=False, validate=[is_numeric])
 
     @post_load
     def parse_decimal(self, item, many, **kwargs):

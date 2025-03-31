@@ -19,7 +19,7 @@ class DisbursementSingle(Base):
 
         super().__init__(API_KEY, SECRET_KEY, ENV)
 
-    def initiate_transfer(self, auth_token, data):
+    def initiate_transfer(self, data, auth_token=None):
         """
         Initiates a single transfer disbursement.
 
@@ -41,9 +41,9 @@ class DisbursementSingle(Base):
         validated_data = SingleTransferSchema().load(data)
 
         url_path = "/api/v2/disbursements/single"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def authorize_transfer(self, auth_token, data):
+    def authorize_transfer(self, data, auth_token=None):
         """
         Authorizes a transfer using the provided authentication token and data.
 
@@ -60,9 +60,9 @@ class DisbursementSingle(Base):
         validated_data = AuthorizeTransferSchema().load(data)
 
         url_path = "/api/v2/disbursements/single/validate-otp"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def resend_otp(self, auth_token, data):
+    def resend_otp(self, data, auth_token=None):
         """
         Resend OTP for a disbursement transaction.
 
@@ -78,9 +78,9 @@ class DisbursementSingle(Base):
         validated_data = ResendOTPSchema().load(data)
 
         url_path = "/api/v2/disbursements/single/resend-otp"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def get_transfer_status(self, auth_token, reference):
+    def get_transfer_status(self, reference, auth_token=None):
         """
         Retrieve the status of a bulk transfer.
 
@@ -96,7 +96,7 @@ class DisbursementSingle(Base):
         url_path = f"/api/v2/disbursements/single/summary?reference={encoded_reference}"
         return self.do_get(url_path, auth_token)
 
-    def list_all_transfers(self, auth_token, page=0, size=10):
+    def list_all_transfers(self, page=0, size=10, auth_token=None):
         """
         List all single disbursement transactions.
 
@@ -114,7 +114,7 @@ class DisbursementSingle(Base):
         )
         return self.do_get(url_path, auth_token)
 
-    def get_wallet_balance(self, auth_token, wallet_account_number):
+    def get_wallet_balance(self, wallet_account_number, auth_token=None):
         """
         Retrieve the balance of the merchant's Monnify wallet.
 

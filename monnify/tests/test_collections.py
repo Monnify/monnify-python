@@ -37,7 +37,7 @@ class TestTransactionAPIs:
             "metaData": {"phoneNumber": "08088632541", "name": "Khalid"},
             "incomeSplitConfig": [
                 {
-                    "subAccountCode": "MFY_SUB_297955769702",
+                    "subAccountCode": "MFY_SUB_456786606061",
                     "feePercentage": 10.5,
                     "splitAmount": 25000,
                     "feeBearer": True,
@@ -68,66 +68,66 @@ class TestTransactionAPIs:
         self._trx_reference = ""
 
     @pytest.fixture()
-    def get_reference(self, token):
+    def get_reference(self):
         self.__data["paymentReference"] = token_hex(5)
-        _, result = self.__instance.initialize_transaction(token, self.__data)
+        _, result = self.__instance.initialize_transaction(self.__data)
         return result["responseBody"]["transactionReference"]
 
-    def test_transaction_initialization(self, token):
+    def test_transaction_initialization(self):
         with pytest.raises(ValidationError):
-            self.__instance.initialize_transaction(token, self.__data)
+            self.__instance.initialize_transaction(self.__data)
 
         self.__data["paymentReference"] = token_hex(5)
-        code, result = self.__instance.initialize_transaction(token, self.__data)
+        code, result = self.__instance.initialize_transaction(self.__data)
         assert code == 200
 
-    def test_transaction_status_v2(self, token):
+    def test_transaction_status_v2(self):
         code, result = self.__instance.get_transaction_status_v2(
-            token, transaction_reference=self.__trx_ref
+            transaction_reference=self.__trx_ref
         )
         assert code == 200 and result["responseBody"]["paymentStatus"] == "PAID"
 
-    def test_transaction_status_v1(self, token):
-        code, result = self.__instance.get_transaction_status_v1(
-            token, transaction_reference=self.__trx_ref
+    def test_transaction_status(self):
+        code, result = self.__instance.get_transaction_status(
+            transaction_reference=self.__trx_ref
         )
         assert code == 200 and result["responseBody"]["paymentStatus"] == "PAID"
 
-        code, result = self.__instance.get_transaction_status_v1(
-            token, payment_reference=self.__payment_ref
+        code, result = self.__instance.get_transaction_status(
+             payment_reference=self.__payment_ref
         )
         assert code == 200 and result["responseBody"]["paymentStatus"] == "PAID"
 
         with pytest.raises((UnprocessableRequestException, Exception)):
             self.__instance.get_transaction_status_v1(
-                token, payment_reference=self.__trx_ref
+                 payment_reference=self.__trx_ref
             )
 
-    def test_ussd_transaction(self, token, get_reference):
+    def test_ussd_transaction(self,  get_reference):
 
         data = {"transactionReference": get_reference, "bankUssdCode": "737"}
         with pytest.raises(ValidationError):
             data.pop("transactionReference")
-            _, result = self.__instance.pay_with_ussd(token, data)
+            _, result = self.__instance.pay_with_ussd( data)
 
         if os.environ.get("ENV") is not None and os.environ.get("ENV") == "SANDBOX":
             pytest.skip("Skipping test as API not available in SANDBOX environment")
 
-    def test_bank_transfer(self, token, get_reference):
+    def test_bank_transfer(self,  get_reference):
 
         data = {"transactionReference": get_reference}
-        code, result = self.__instance.pay_with_bank_transfer(token, data)
+        code, result = self.__instance.pay_with_bank_transfer( data)
         assert code == 200 and result["responseBody"].get("accountNumber") is not None
 
         with pytest.raises(ValidationError):
             data.pop("transactionReference")
-            _, result = self.__instance.pay_with_bank_transfer(token, data)
+            _, result = self.__instance.pay_with_bank_transfer( data)
 
-    def test_card(self, token, get_reference):
+    def test_card(self,  get_reference):
 
         self.__card_data["transactionReference"] = get_reference
         self.__card_data["collectionChannel"] = "API_NOTIFICATION"
-        code, result = self.__instance.charge_card(token, self.__card_data)
+        code, result = self.__instance.charge_card( self.__card_data)
         assert code == 200
 
 
@@ -150,7 +150,7 @@ class TestReservedAccountAPIs:
             "getAllAvailableBanks": True,
             "incomeSplitConfig": [
                 {
-                    "subAccountCode": "MFY_SUB_227845175882",
+                    "subAccountCode": "MFY_SUB_456786606061",
                     "feePercentage": 10.5,
                     "splitAmount": 25000,
                     "feeBearer": True,
@@ -163,7 +163,7 @@ class TestReservedAccountAPIs:
         self.__data["accountReference"] = token_hex(5)
         self.__data["customerEmail"] = f"{token_hex(3)}@test.com"
 
-        code, result = self.__instance.create_reserved_acount(token, self.__data)
+        code, result = self.__instance.create_reserved_account( self.__data)
         assert code == 200
         return result["responseBody"]["accountReference"]
 
@@ -172,46 +172,46 @@ class TestReservedAccountAPIs:
         self.__data["accountReference"] = token_hex(5)
         self.__data["customerEmail"] = f"{token_hex(3)}@test.com"
 
-        code, result = self.__instance.create_reserved_acount(token, self.__data)
+        code, result = self.__instance.create_reserved_account( self.__data)
         assert code == 200
         self.__data.pop("bvn")
 
         with pytest.raises(ValidationError):
             self.__data["accountReference"] = token_hex(5)
             self.__data["customerEmail"] = f"{token_hex(3)}@test.com"
-            self.__instance.create_reserved_acount(token, self.__data)
+            self.__instance.create_reserved_account( self.__data)
 
-    def test_add_linked_account(self, token, get_account_reference):
+    def test_add_linked_account(self,  get_account_reference):
 
         data = {
             "getAllAvailableBanks": False,
             "preferredBanks": ["232"],
             "accountReference": get_account_reference,
         }
-        code, result = self.__instance.add_linked_accounts(token, data)
+        code, result = self.__instance.add_linked_accounts( data)
         assert code == 200
 
-    # def test_update_kyc_info(self, token, get_account_reference):
+    # def test_update_kyc_info(self,  get_account_reference):
 
     #     data = {"bvn":"21212121212","accountReference": get_account_reference}
-    #     code, result = self.__instance.update_reserved_account_kyc_info(token, data)
+    #     code, result = self.__instance.update_reserved_account_kyc_info( data)
     #     assert code == 200
 
-    def test_account_details(self, token, get_account_reference):
+    def test_account_details(self,  get_account_reference):
         code, result = self.__instance.get_reserved_account_details(
-            token, get_account_reference
+             get_account_reference
         )
         assert code == 200
 
-    def test_account_transactions(self, token, get_account_reference):
+    def test_account_transactions(self,  get_account_reference):
         code, result = self.__instance.get_reserved_account_transactions(
-            token, get_account_reference
+             get_account_reference
         )
         assert code == 200
 
-    def test_account_deallocation(self, token, get_account_reference):
+    def test_account_deallocation(self,  get_account_reference):
         code, result = self.__instance.deallocate_reserved_account(
-            token, get_account_reference
+             get_account_reference
         )
         assert code == 200
 
@@ -233,11 +233,11 @@ class TestInvoiceAPIs:
             "contractCode": "7059707855",
             "customerEmail": "johnsnow@gmail.com",
             "customerName": "John Snow",
-            "expiryDate": "2025-10-30 12:00:00",
+            "expiryDate": "2025-05-30 12:00:00",
             "paymentMethods": [],
             "incomeSplitConfig": [
                 {
-                    "subAccountCode": "MFY_SUB_319452883228",
+                    "subAccountCode": "MFY_SUB_456786606061",
                     "feePercentage": 10.5,
                     "splitAmount": 20,
                     "feeBearer": True,
@@ -248,31 +248,32 @@ class TestInvoiceAPIs:
         }
 
     @pytest.fixture()
-    def get_reference(self, token):
+    def get_reference(self):
         self.__data["invoiceReference"] = token_hex(5)
-        _, result = self.__instance.create_invoice(token, self.__data)
+        _, result = self.__instance.create_invoice( self.__data)
         return result["responseBody"]["invoiceReference"]
+
 
     def test_invoice_creation(self, token):
 
         self.__data["invoiceReference"] = token_hex(5)
 
-        code, result = self.__instance.create_invoice(token, self.__data)
+        code, result = self.__instance.create_invoice( self.__data)
         assert code == 200
-        self.__data["incomeSplitConfig"].pop("splitAmount")
+        self.__data["incomeSplitConfig"][0].pop("splitAmount")
 
         with pytest.raises(ValidationError):
             self.__data["invoiceReference"] = token_hex(5)
-            self.__instance.create_reserved_acount(token, self.__data)
+            self.__instance.create_invoice( self.__data)
 
-    def test_invoice_details(self, token, get_reference):
-        code, result = self.__instance.get_invoice_details(token, get_reference)
+    def test_invoice_details(self,  get_reference):
+        code, result = self.__instance.get_invoice_details( get_reference)
         assert code == 200
 
-    def test_all_invoice(self, token):
-        code, result = self.__instance.get_all_invoices(token)
+    def test_all_invoice(self):
+        code, result = self.__instance.get_all_invoices()
         assert code == 200
 
-    def test_delete_invoice(self, token, get_reference):
-        code, result = self.__instance.cancel_invoice(token, get_reference)
+    def test_delete_invoice(self,  get_reference):
+        code, result = self.__instance.cancel_invoice( get_reference)
         assert code == 200

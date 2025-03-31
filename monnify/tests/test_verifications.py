@@ -19,9 +19,9 @@ class TestSettlementAPIs:
         self.__account_number = "2085886393"
         self.__bank_code = "057"
 
-    def test_account_validation(self, token):
+    def test_account_validation(self):
 
         code, result = self.__instance.validate_bank_account(
-            token, self.__account_number, self.__bank_code
+            self.__account_number, self.__bank_code
         )
         assert code == 200

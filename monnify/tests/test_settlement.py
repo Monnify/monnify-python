@@ -19,40 +19,33 @@ class TestSettlementAPIs:
         self.__data = [
             {
                 "currencyCode": "NGN",
-                "bankCode": "057",
-                "accountNumber": "2085886393",
+                "bankCode": "035",
+                "accountNumber": "9520825504",
                 "email": "tamira1@gmail.com",
                 "defaultSplitPercentage": "20",
             }
         ]
 
-    @pytest.fixture()
-    def get_sub_account(self, token):
+    def test_create_sub_account(self):
 
-        code, result = self.__instance.get_sub_accounts(token)
-        assert code == 200
-        return result["responseBody"][-1]["subAccountCode"]
-
-    def test_create_sub_account(self, token):
-
-        code, result = self.__instance.create_sub_account(token, self.__data)
+        code, result = self.__instance.create_sub_account(self.__data)
         assert code == 200
 
-    def test_update_sub_account(self, token, get_sub_account):
-
+    def test_update_sub_account(self):
+        _get_sub_account = self.__instance.get_sub_accounts()[1]["responseBody"][1]["subAccountCode"]
         self.__data[0]["email"] = "hello@test.com"
         self.__data[0]["defaultSplitPercentage"] = 73
-        self.__data[0]["subAccountCode"] = get_sub_account
+        self.__data[0]["subAccountCode"] = _get_sub_account
 
-        code, result = self.__instance.update_sub_account(token, self.__data[0])
+        code, result = self.__instance.update_sub_account(self.__data[0])
         assert code == 200
 
-    def test_get_sub_account(self, token):
+    def test_get_sub_account(self):
 
-        code, result = self.__instance.get_sub_accounts(token)
+        code, result = self.__instance.get_sub_accounts()
         assert code == 200
 
-    def test_delete_sub_account(self, token, get_sub_account):
-
-        code, result = self.__instance.delete_sub_accounts(token, get_sub_account)
+    def test_delete_sub_account(self):
+        _get_sub_account = self.__instance.get_sub_accounts()[1]["responseBody"][1]["subAccountCode"]
+        code, result = self.__instance.delete_sub_account(_get_sub_account)
         assert code == 200

@@ -15,7 +15,7 @@ class Settlement(Base):
 
         super().__init__(API_KEY, SECRET_KEY, ENV)
 
-    def create_sub_account(self, auth_token, data):
+    def create_sub_account(self, data, auth_token=None):
         """
         Create a new sub-account.
 
@@ -39,9 +39,9 @@ class Settlement(Base):
         validated_data = SubAccountSchema().load(data)
 
         url_path = "/api/v1/sub-accounts"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def update_sub_account(self, auth_token, data):
+    def update_sub_account(self, data, auth_token=None):
         """
         Update a sub-account with the provided data.
 
@@ -60,9 +60,9 @@ class Settlement(Base):
         validated_data = UpdateSubSchema().load(data)
 
         url_path = "/api/v1/sub-accounts"
-        return self.do_put(url_path, auth_token, validated_data)
+        return self.do_put(url_path, validated_data, auth_token)
 
-    def get_sub_accounts(self, auth_token):
+    def get_sub_accounts(self, auth_token=None):
         """
         Retrieve a list of subAccounts.
 
@@ -76,7 +76,7 @@ class Settlement(Base):
         url_path = f"/api/v1/sub-accounts"
         return self.do_get(url_path, auth_token)
 
-    def delete_sub_accounts(self, auth_token, sub_account_code):
+    def delete_sub_account(self, sub_account_code, auth_token=None):
         """
         Deletes a sub-account.
 
@@ -92,7 +92,7 @@ class Settlement(Base):
         return self.do_delete(url_path, auth_token)
 
     def get_transaction_by_settlement_reference(
-        self, auth_token, settlement_reference, page=0, size=10
+        self, settlement_reference, page=0, size=10, auth_token=None
     ):
         """
         Retrieve transactions by settlement reference.
@@ -112,7 +112,7 @@ class Settlement(Base):
         return self.do_get(url_path, auth_token)
 
     def get_settlement_status_by_transaction_reference(
-        self, auth_token, transaction_reference
+        self, transaction_reference, auth_token=None
     ):
         """
         Retrieve the settlement status for a given transaction reference.

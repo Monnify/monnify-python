@@ -4,12 +4,14 @@ import hmac
 import hashlib
 import json
 from base64 import b64encode
+from datetime import datetime
 
 from monnify.exceptions import (
     UnprocessableRequestException,
     GatewayException,
     DuplicateInstanceException,
     InvalidDataException,
+    GlobalException
 )
 
 
@@ -31,6 +33,7 @@ class Base:
     """    
 
     _instance = []
+    __TOKENCONFIG = {"ISTOKENSET":False,"TOKENEXPIRATION":None,"TOKEN":None, "THRESHOLD":500}
 
     def __new__(cls, API_KEY: str = None, SECRET_KEY: str = None, ENV: str = "SANDBOX"):
         """_summary_
@@ -108,7 +111,16 @@ class Base:
                 "Unkwown environment supplied, either supply 'SANDBOX' or 'LIVE'"
             )
 
-    def get_auth_token(self):
+    def __set_token(self, token: str, expiry_time: int) -> None:
+        """
+        Sets the access token and its expiration time
+        """
+        self.__TOKENCONFIG["TOKEN"] = token
+        self.__TOKENCONFIG["TOKENEXPIRATION"] = expiry_time
+        self.__TOKENCONFIG["ISTOKENSET"] = True
+
+
+    def get_auth_token(self, cache: bool=True) -> tuple:
         """Retrieves access token from Monnify
 
         Raises:
@@ -119,8 +131,14 @@ class Base:
 
         Returns:
             _type_: A tuple of API status code, and a json response
-        """        
+        """
 
+        if (cache is True and 
+            self.__TOKENCONFIG["ISTOKENSET"] is True and 
+            self.__TOKENCONFIG["TOKENEXPIRATION"] > int(datetime.now().timestamp())):
+            return 200, {"accessToken":self.__TOKENCONFIG["TOKEN"],
+                         "expiresIn":(self.__TOKENCONFIG["TOKENEXPIRATION"]-int(datetime.now().timestamp()))}
+        
         auth_string = self.__api_key + ":" + self.__secret_key
         base64_hash = b64encode(auth_string.encode("ascii")).decode()
         self.__headers["Authorization"] = f"Basic {base64_hash}"
@@ -131,18 +149,46 @@ class Base:
                 url=url, headers=self.__headers, data=json.dumps(data)
             )
             if response.status_code == 200:
-                return response.status_code, response.json()
+                resp = response.json()
+                token = resp['responseBody']['accessToken']
+                expiry = resp['responseBody']['expiresIn']
+                if cache is True and expiry >= self.__TOKENCONFIG["THRESHOLD"]:
+                    new_expiry =int(datetime.now().timestamp()) + expiry
+                    self.__set_token(token, new_expiry)
+                return response.status_code, {"accessToken":token,
+                                              "expiresIn":expiry}
+            
             elif response.status_code >= 400 and response.status_code < 500:
                 raise UnprocessableRequestException(response.text, response.status_code)
+            
             elif response.status_code >= 500:
                 raise GatewayException(response.text, response.status_code)
             else:
                 raise RequestException(response.status_code, response.text)
         except Exception as e:
-            print(e)
-            raise Exception(e)
+            raise GlobalException(e)
 
-    def do_get(self: object, url_path: str, authorization: str) -> tuple:
+    @classmethod  
+    def reset_token_config(cls):
+        """
+        Resets the token configuration
+        """
+        cls.__TOKENCONFIG["TOKEN"] = None
+        cls.__TOKENCONFIG["TOKENEXPIRATION"] = None
+        cls.__TOKENCONFIG["ISTOKENSET"] = False
+    
+    @classmethod
+    def update_token_threshold(cls, threshold: int):
+        """
+        Updates the token threshold
+        """
+        if int(threshold) < 0:
+            raise InvalidDataException("Threshold must be a positive integer")
+        cls.__TOKENCONFIG["THRESHOLD"] = int(threshold)
+        cls.reset_token_config()
+
+
+    def do_get(self: object, url_path: str, authorization: str=None) -> tuple:
         """A low level GET request to the Monnify API
 
         Args:
@@ -162,7 +208,11 @@ class Base:
 
         url: str = self.__base_url + url_path
         headers: dict = self.__headers
+        if authorization is None:
+            _, authorization = self.get_auth_token()
+            authorization = authorization["accessToken"]
         headers["Authorization"] = f"Bearer {authorization}"
+
         try:
             response = requests.get(url=url, headers=headers)
             if response.status_code == 200:
@@ -174,10 +224,10 @@ class Base:
             else:
                 raise RequestException(response.status_code, response.text)
         except Exception as e:
-            print(e)
-            raise Exception(e)
+            raise GlobalException(e)
 
-    def do_post(self: object, url_path: str, authorization: str, data: dict) -> tuple:
+
+    def do_post(self: object, url_path: str, data: dict, authorization: str=None) -> tuple:
         """A low level POST request to the Monnify API
 
         Args:
@@ -198,7 +248,11 @@ class Base:
 
         url: str = self.__base_url + url_path
         headers: dict = self.__headers
+        if authorization is None:
+            _, authorization = self.get_auth_token()
+            authorization = authorization["accessToken"]
         headers["Authorization"] = f"Bearer {authorization}"
+
         try:
             response = requests.post(url=url, headers=headers, data=json.dumps(data))
             if response.status_code == 200:
@@ -210,10 +264,10 @@ class Base:
             else:
                 raise RequestException(response.status_code, response.text)
         except Exception as e:
-            print(e)
-            raise Exception(e)
+            raise GlobalException(e)
 
-    def do_put(self: object, url_path: str, authorization: str, data: dict) -> tuple:
+
+    def do_put(self: object, url_path: str, data: dict, authorization: str=None) -> tuple:
         """A low level PUT request to the Monnify API
 
         Args:
@@ -234,7 +288,11 @@ class Base:
 
         url: str = self.__base_url + url_path
         headers: dict = self.__headers
+        if authorization is None:
+            _, authorization = self.get_auth_token()
+            authorization = authorization["accessToken"]
         headers["Authorization"] = f"Bearer {authorization}"
+
         try:
             response = requests.put(url=url, headers=headers, data=json.dumps(data))
             if response.status_code == 200:
@@ -246,10 +304,10 @@ class Base:
             else:
                 raise RequestException(response.status_code, response.text)
         except Exception as e:
-            print(e)
-            raise Exception(e)
+            raise GlobalException(e)
 
-    def do_delete(self: object, url_path: str, authorization: str) -> tuple:
+
+    def do_delete(self: object, url_path: str, authorization: str=None) -> tuple:
         """A low level Delete request to the Monnify API
 
         Args:
@@ -269,7 +327,11 @@ class Base:
 
         url: str = self.__base_url + url_path
         headers: dict = self.__headers
+        if authorization is None:
+            _, authorization = self.get_auth_token()
+            authorization = authorization["accessToken"]
         headers["Authorization"] = f"Bearer {authorization}"
+
         try:
             response = requests.delete(url=url, headers=headers)
             if response.status_code == 200:
@@ -281,11 +343,12 @@ class Base:
             else:
                 raise RequestException(response.status_code, response.text)
         except Exception as e:
-            print(e)
-            raise Exception(e)
+            raise GlobalException(e)
+
 
     def compare_hash(self: object, payload: bytes, monnify_signature: str) -> bool:
-        """_summary_
+        """
+        Webhook signature comparison utility
 
         Args:
             self (object): The class instance

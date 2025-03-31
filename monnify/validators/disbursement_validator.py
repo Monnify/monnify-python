@@ -103,16 +103,6 @@ class BulkTransferSchema(Schema):
     class Meta:
         unknown = EXCLUDE
 
-    # @pre_load
-    # def evict_field(self, data, many, **kwargs):
-    #     print(data,'--------------------')
-    #     schema = SingleTransferSchema()
-    #     trx_data = data.pop('transactionList')
-    #     if trx_data is not None:
-    #         for dt in trx_data:
-    #             if dt.get('sourceAccountNumber'):
-    #                 dt.pop('sourceAccountNumber')
-    #         data['transactionList'] = trx_data
 
     @post_load
     def parse_decimal(self, item, many, **kwargs):

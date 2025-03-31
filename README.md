@@ -3,7 +3,7 @@ A Monnify Python Library
 
 ## Overview
 
-`pymonnify` is a Python library for interacting with the Monnify API. It provides classes and methods to handle various Monnify services such as transactions, invoices, reserved accounts, disbursements, settlements, and verifications.
+`monnify-python` is a Python library for interacting with the Monnify API. It provides classes and methods to handle various Monnify services such as transactions, invoices, reserved accounts, disbursements, settlements, and verifications.
 
 ## Installation
 
@@ -12,14 +12,14 @@ To install the library, use pip:
 After publication do:
 
 ```sh
-pip install pymonnify 
+pip install monnify-python
 ```
 
 For testing do:
 ```sh
-git clone https://github.com/Monnify/pymonnify
+git clone https://github.com/Monnify/monnify-python
 
-cd pymonnify
+cd monnify-python
 
 python3 -m venv dev
 
@@ -38,6 +38,12 @@ from monnify import Monnify
 
 monnify = Monnify(API_KEY="your_api_key", SECRET_KEY="your_secret_key", ENV="SANDBOX")
 ```
+### Authentication
+
+```sh
+status_code, auth_token_obj = monnify.get_auth_token()
+auth_token = auth_token_obj.get("accessToken")
+```
 
 ### Transaction
 The Transaction class provides methods to handle transactions.
@@ -46,7 +52,6 @@ The Transaction class provides methods to handle transactions.
 transaction = monnify.Transaction
 
 # Initialize a transaction
-_, auth_token = transaction.get_auth_token()
 
 data = {
     "paymentReference": "unique_reference",
@@ -61,7 +66,7 @@ data = {
     "metaData": {"phoneNumber": "08012345678"},
     "incomeSplitConfig": []
 }
-status_code, response = transaction.initialize_transaction(auth_token, data)
+status_code, response = transaction.initialize_transaction(data)
 ```
 
 
@@ -73,7 +78,6 @@ The ReservedAccount class provides methods to handle reserved accounts.
 reserved_account = monnify.ReservedAccount
 
 # Create a reserved account
-_, auth_token = reserved_account.get_auth_token()
 
 data = {
     "accountReference": "unique_reference",
@@ -86,7 +90,7 @@ data = {
     "getAllAvailableBanks": True,
     "incomeSplitConfig": []
 }
-status_code, response = reserved_account.create_reserved_acount(auth_token, data)
+status_code, response = reserved_account.create_reserved_acount(data)
 ```
 
 
@@ -98,7 +102,6 @@ The DisbursementSingle and DisibursementBulk classes provide methods to handle s
 single_disbursement = monnify.DisbursementSingle
 
 # Initiate a single transfer
-_, auth_token = single_disbursement.get_auth_token()
 
 data = {
     "reference": "unique_reference",
@@ -109,8 +112,28 @@ data = {
     "sourceAccountNumber": "0987654321",
     "currency": "NGN"
 }
-status_code, response = single_disbursement.initiate_transfer(auth_token, data)
+status_code, response = single_disbursement.initiate_transfer(data)
 ```
+
+### Paycode
+
+The Paycode classe provides methods to handle paycode manipulations.
+
+```sh
+paycode = monnify.Paycode
+
+# Creates paycode
+
+data = {
+    "beneficiaryName": "Tester",
+    "amount": 20,
+    "paycodeReference": "sspcsspwvdjx0kt",
+    "expiryDate": "2025-03-23 17:00:26",
+    "clientId":"MK_TEST_FDH37842DJH"
+}
+status_code, response = paycode.create_paycode(data)
+```
+
 
 ### Settlement
 The Settlement class provides methods to handle settlements.
@@ -119,7 +142,8 @@ The Settlement class provides methods to handle settlements.
 settlement = monnify.Settlement
 
 # Create a sub-account
-_, auth_token = settlement.get_auth_token()
+_, auth_token_obj = settlement.get_auth_token()
+auth_token = auth_token_obj.get("accessToken")
 
 data = {
     "bankCode": "057",
@@ -138,7 +162,8 @@ The Verification class provides methods to handle verifications such as BVN, NIN
 verification = monnify.Verification
 
 # Verify BVN
-_, auth_token = verification.get_auth_token()
+_, auth_token_obj = verification.get_auth_token()
+auth_token = auth_token_obj.get("accessToken")
 
 data = {
     "bvn": "12345678901",

@@ -19,7 +19,7 @@ class DisibursementBulk(Base):
 
         super().__init__(API_KEY, SECRET_KEY, ENV)
 
-    def initiate_transfer(self, auth_token, data):
+    def initiate_transfer(self, data, auth_token=None):
         """
         Initiates a bulk transfer.
 
@@ -41,9 +41,9 @@ class DisibursementBulk(Base):
 
         validated_data = BulkTransferSchema().load(data)
         url_path = "/api/v2/disbursements/batch"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def authorize_transfer(self, auth_token, data):
+    def authorize_transfer(self, data, auth_token=None):
         """
         Authorizes a transfer using the provided authentication token and data.
 
@@ -59,9 +59,9 @@ class DisibursementBulk(Base):
 
         validated_data = AuthorizeTransferSchema().load(data)
         url_path = "/api/v2/disbursements/batch/validate-otp"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def resend_otp(self, auth_token, data):
+    def resend_otp(self, data, auth_token=None):
         """
         Resend OTP for a disbursement transaction.
 
@@ -76,9 +76,9 @@ class DisibursementBulk(Base):
 
         validated_data = ResendOTPSchema().load(data)
         url_path = "/api/v2/disbursements/single/resend-otp"
-        return self.do_post(url_path, auth_token, validated_data)
+        return self.do_post(url_path, validated_data, auth_token)
 
-    def get_transfer_status(self, auth_token, reference):
+    def get_transfer_status(self, reference, auth_token=None):
         """
         Retrieve the status of a bulk transfer.
 
@@ -94,7 +94,7 @@ class DisibursementBulk(Base):
         url_path = f"/api/v2/disbursements/bulk/{encoded_reference}/transactions"
         return self.do_get(url_path, auth_token)
 
-    def search_transactions(self, auth_token, wallet_account_number):
+    def search_transactions(self, wallet_account_number, auth_token=None):
         """
         Search for transactions associated with a specific wallet account number.
 

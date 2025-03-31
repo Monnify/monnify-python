@@ -21,4 +21,4 @@ def prefetch_token(preset_env):
 @pytest.fixture(scope="package", autouse=True)
 def set_token(prefetch_token):
     status, response = prefetch_token
-    return response["responseBody"]["accessToken"]
+    return response["accessToken"]

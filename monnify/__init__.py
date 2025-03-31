@@ -1,5 +1,5 @@
-from monnify.collection import Transaction, Invoice, ReservedAccount
-from monnify.disbursement import DisbursementSingle, DisibursementBulk
+from monnify.collection import Transaction, Invoice, ReservedAccount,TransactionRefund
+from monnify.disbursement import DisbursementSingle, DisibursementBulk, Paycode
 from monnify.settlement import Settlement
 from monnify.verification import Verification
 
@@ -14,10 +14,12 @@ class Monnify:
 
         classes = [
             Transaction,
+            TransactionRefund,
             Invoice,
             ReservedAccount,
             DisbursementSingle,
             DisibursementBulk,
+            Paycode,
             Settlement,
             Verification,
         ]

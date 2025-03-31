@@ -26,3 +26,8 @@ class InvalidDataException(CustomBaseException):
 
     def __str__(self):
         return f"{self.message}"
+    
+class GlobalException(CustomBaseException):
+    
+    def __str__(self):
+        return f"{self.message}"
