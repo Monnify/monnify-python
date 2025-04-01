@@ -41,7 +41,7 @@ monnify = Monnify(API_KEY="your_api_key", SECRET_KEY="your_secret_key", ENV="SAN
 ### Authentication
 
 ```sh
-status_code, auth_token_obj = monnify.get_auth_token()
+status_code, auth_token_obj = monnify.Transaction.get_auth_token()
 auth_token = auth_token_obj.get("accessToken")
 ```
 
