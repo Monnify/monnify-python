@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="monnify-python",
-    version="1.0.0",
+    version="1.0.2",
     author="Marvelous-Benji",
     author_email="integration-support@monnify.com",
     description="Python library for the Monnify API",

@@ -94,16 +94,23 @@ class Transaction(Base):
                 "At least one of payment or transaction reference is required!!"
             )
 
-        url_path = (
-            "/api/v2/merchant/transactions/query?transactionReference="
-            + url_encoder.quote_plus(transaction_reference)
-            if (payment_reference is None)
-            else "/api/v2/merchant/transactions/query?paymentReference="
-            + url_encoder.quote_plus(payment_reference)
-        )
+        url_path = "/api/v2/merchant/transactions/query?transactionReference="
+        if transaction_reference is not None:
+            url_path += url_encoder.quote_plus('""') if (transaction_reference.strip() in ["",'']) else url_encoder.quote_plus(transaction_reference)
+        elif payment_reference is not None:
+            url_path += url_encoder.quote_plus('""') if (payment_reference.strip() in ["",'']) else url_encoder.quote_plus(payment_reference) 
+        else:
+            raise Exception(
+                "At least one of payment or transaction reference is required!!"
+            )
+        
         return self.do_get(url_path, auth_token)
     
-    def get_all_transactions(self, start_date, end_date, payment_status=None, page=0, size=10, auth_token=None) -> tuple:
+    def get_all_transactions(self, start_date, end_date, page=0, size=10, 
+                             payment_status=None, paymentReference=None,
+                             transactionReference=None, fromAmount=None, 
+                             toAmount=None, amount=None, customerName=None, 
+                             customerEmail=None, auth_token=None) -> tuple:
         """
         Retrieve all transactions with pagination.
 
@@ -111,11 +118,38 @@ class Transaction(Base):
             auth_token (str): The authentication token for the API.
             page (int, optional): The page number to retrieve. Defaults to 0.
             size (int, optional): The number of transactions per page. Defaults to 10.
+            start_date (int): A unix timestamp in milliseconds of the start date for the transaction search.
+            end_date (int): A unix timestamp in milliseconds of the end date for the transaction search.
+            payment_status (str, optional): The status of the payment. Defaults to None.
+            paymentReference (str, optional): The merchant's generated payment reference to search for. Defaults to None.
+            transactionReference (str, optional): The Monnify transaction reference to search for. Defaults to None.
+            fromAmount (float, optional): The minimum amount for the transaction. Defaults to None.
+            toAmount (float, optional): The maximum amount for the transaction. Defaults to None.
+            amount (float, optional): The exact amount for the transaction. Defaults to None.
+            customerName (str, optional): The name of the customer. Defaults to None.
+            customerEmail (str, optional): The email of the customer. Defaults to None.
+        Returns:
+            tuple: A tuple containing the response status and data
+        from the API.
         """
 
-        url_path =( f"/api/v1/transactions/search?page={page}&size={size}&from={start_date}&to={end_date}"
-                   if payment_status is not None  
-                   else f"/api/v1/transactions/search?page={page}&size={size}&from={start_date}&to={end_date}&paymentStatus={payment_status}")        
+        url_path = f"/api/v1/transactions/search?page={page}&size={size}&from={start_date}&to={end_date}" 
+        if payment_status:
+            url_path += f"&paymentStatus={payment_status}"
+        if paymentReference:
+            url_path += f"&paymentReference={url_encoder.quote_plus(paymentReference)}"
+        if transactionReference:
+            url_path += f"&transactionReference={url_encoder.quote_plus(transactionReference)}"
+        if fromAmount:
+            url_path += f"&fromAmount={fromAmount}"
+        if toAmount:
+            url_path += f"&toAmount={toAmount}"
+        if amount:
+            url_path += f"&amount={amount}"
+        if customerName:
+            url_path += f"&customerName={customerName}"
+        if customerEmail:
+            url_path += f"&customerEmail={customerEmail}"     
         return self.do_get(url_path, auth_token)
     
 
@@ -316,7 +350,7 @@ class TransactionRefund(Base):
         url_path = "/api/v1/refunds/" + encoded_reference
         return self.do_get(url_path, auth_token)
     
-    def get_all_refunds(self, start_date, end_date, page=0, size=10, auth_token=None):
+    def get_all_refunds(self, start_date, end_date, page=0, size=10, transactionReference=None, refundStatus=None, auth_token=None):
         """
         Fetches all refunds within a specified date range.
 
@@ -326,10 +360,16 @@ class TransactionRefund(Base):
             size (int, optional): The number of refunds per page. Defaults to 10.
             start_date (int): A unix timestamp in milliseconds of the start date for the refund search.
             end_date (int): A unix timestamp in milliseconds of the end date for the refund search.
+            transactionReference (str, optional): The Monnify transaction reference to search for. Defaults to None.
+            refundStatus (str, optional): The status of the refund. Defaults to None.
 
         Returns:
             tuple: A tuple containing the response status and data from the API.
         """
 
         url_path = f"/api/v1/refunds?page={page}&size={size}&from={start_date}&to={end_date}"
+        if transactionReference:
+            url_path += f"&transactionReference={url_encoder.quote_plus(transactionReference)}"
+        if refundStatus:
+            url_path += f"&refundStatus={refundStatus}"
         return self.do_get(url_path, auth_token)

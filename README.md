@@ -142,8 +142,6 @@ The Settlement class provides methods to handle settlements.
 settlement = monnify.Settlement
 
 # Create a sub-account
-_, auth_token_obj = settlement.get_auth_token()
-auth_token = auth_token_obj.get("accessToken")
 
 data = {
     "bankCode": "057",
@@ -152,7 +150,7 @@ data = {
     "currencyCode": "NGN",
     "defaultSplitPercentage": 10.0
 }
-status_code, response = settlement.create_sub_account(auth_token, data)
+status_code, response = settlement.create_sub_account(data)
 ```
 
 ### Verification
@@ -162,8 +160,6 @@ The Verification class provides methods to handle verifications such as BVN, NIN
 verification = monnify.Verification
 
 # Verify BVN
-_, auth_token_obj = verification.get_auth_token()
-auth_token = auth_token_obj.get("accessToken")
 
 data = {
     "bvn": "12345678901",
@@ -171,7 +167,7 @@ data = {
     "mobileNo": "08012345678",
     "dateOfBirth": "1990-01-01"
 }
-status_code, response = verification.verify_bvn(auth_token, data)
+status_code, response = verification.verify_bvn(data)
 ```
 
 ## Documentation

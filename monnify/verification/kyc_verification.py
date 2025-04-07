@@ -95,3 +95,27 @@ class Verification(Base):
 
         url_path = f"/api/v1/disbursements/account/validate?accountNumber={account_number}&bankCode={bank_code}"
         return self.do_get(url_path, auth_token)
+    
+    def get_banks(self, auth_token=None):
+        """
+        Retrieve a list of CBN supported banks.
+        Args:
+            auth_token (str): The authentication token required for the API request.
+        Returns:
+            tuple: The status code and response from the API containing the list of banks.
+        """
+
+        url_path = '/api/v1/banks'
+        return self.do_get(url_path, auth_token)
+    
+    def get_banks_with_ussd_code(self, auth_token=None):
+        """
+        Retrieve a list of CBN supported banks with their USSD codes.
+        Args:
+            auth_token (str): The authentication token required for the API request.
+        Returns:
+            tuple: The status code and response from the API containing the list of banks with USSD codes.
+        """
+
+        url_path = '/api/v1/sdk/transactions/banks'
+        return self.do_get(url_path, auth_token)

@@ -78,33 +78,53 @@ class DisibursementBulk(Base):
         url_path = "/api/v2/disbursements/single/resend-otp"
         return self.do_post(url_path, validated_data, auth_token)
 
-    def get_transfer_status(self, reference, auth_token=None):
+    def get_bulk_transfer_transactions(self, reference, pageNo=0, pageSize=10, auth_token=None):
         """
         Retrieve the status of a bulk transfer.
 
         Args:
             auth_token (str): The authentication token required for the API request.
             reference (str): The batch reference for the bulk transfer.
+            pageNo (int): The page number to retrieve.
+            pageSize (int): The number of records per page.
 
         Returns:
             tuple: The response from the API along with the status of the bulk transfer.
         """
 
         encoded_reference = url_encoder.quote_plus(reference)
-        url_path = f"/api/v2/disbursements/bulk/{encoded_reference}/transactions"
+        url_path = f"/api/v2/disbursements/bulk/{encoded_reference}/transactions?pageNo={pageNo}&pageSize={pageSize}"
         return self.do_get(url_path, auth_token)
 
-    def search_transactions(self, wallet_account_number, auth_token=None):
+    def search_transactions(self, wallet_account_number, pageNo=0,pageSize=10,
+                            transactionReference=None, startDate=None, endDate=None, 
+                            amountFrom=None, amountTo=None, auth_token=None):
         """
         Search for transactions associated with a specific wallet account number.
 
         Args:
             auth_token (str): The authentication token required for the API request.
             wallet_account_number (str): The wallet account number of the merchant.
+            pageNo (int): The page number to retrieve.
+            pageSize (int): The number of records per page.
+            transactionReference (str, optional): The reference for the transaction.
+            startDate (str, optional): The start date for the search.
+            endDate (str, optional): The end date for the search.
+            amountFrom (float, optional): The minimum amount for the transaction.
+            amountTo (float, optional): The maximum amount for the transaction.
 
         Returns:
             tuple: The status code and response from the API containing the transaction details.
         """
-
-        url_path = f"/api/v2/disbursements/search-transactions?sourceAccountNumber={wallet_account_number}"
+        url_path = f"/api/v2/disbursements/search-transactions?sourceAccountNumber={wallet_account_number}&pageNo={pageNo}&pageSize={pageSize}"
+        if transactionReference:
+            url_path += f"&transactionReference={url_encoder.quote_plus(transactionReference)}"
+        if startDate:
+            url_path += f"&startDate={startDate}"
+        if endDate:
+            url_path += f"&endDate={endDate}"
+        if amountFrom:
+            url_path += f"&amountFrom={amountFrom}"
+        if amountTo:
+            url_path += f"&amountTo={amountTo}"
         return self.do_get(url_path, auth_token)

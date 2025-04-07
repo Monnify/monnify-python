@@ -33,6 +33,7 @@ class DisbursementSingle(Base):
                 destinationAccountNumber (str): Account number of the destination account.
                 sourceAccountNumber (str): The wallet account number of the source account.
                 currency (str): Currency of the transfer, default is "NGN".
+                async (bool): Whether to process the transfer asynchronously, default is False.
 
         Returns:
             tuple: The status code and response from the API after initiating the transfer.

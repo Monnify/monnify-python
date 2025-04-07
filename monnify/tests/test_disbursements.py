@@ -134,7 +134,7 @@ class TestPaycodeAPIs:
             "beneficiaryName": "Tester",
             "amount": 20,
             "paycodeReference": token_hex(5),
-            "expiryDate": "2025-03-28 17:00:26",
+            "expiryDate": "2025-04-07 17:00:26",
             "clientId":"MK_TEST_JRQAZRFD2W"
         }
 
@@ -160,6 +160,10 @@ class TestPaycodeAPIs:
     def test_get_clear_paycode(self, get_reference):
             
         code, result = self.__instance.get_clear_paycode(get_reference)
+        assert code == 200
+    
+    def test_fetch_paycode(self):
+        code, result = self.__instance.fetch_paycodes(1760484949000,139404008400,beneficiaryName="Tester")
         assert code == 200
 
     def test_delete_paycode(self, get_reference):

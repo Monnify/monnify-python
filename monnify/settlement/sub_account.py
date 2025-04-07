@@ -108,7 +108,7 @@ class Settlement(Base):
         """
 
         encoded_reference = url_encoder.quote_plus(settlement_reference)
-        url_path = f"/api/v1/transactions/find-by-settlement-reference?settlement-reference={encoded_reference}&page={page}&size={size}"
+        url_path = f"/api/v1/transactions/find-by-settlement-reference?reference={encoded_reference}&page={page}&size={size}"
         return self.do_get(url_path, auth_token)
 
     def get_settlement_status_by_transaction_reference(

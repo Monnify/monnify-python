@@ -74,19 +74,27 @@ class Paycode(Base):
         url_path = f"/api/v1/paycode/{encoded_reference}/authorize"
         return self.do_get(url_path, auth_token)
     
-    def fetch_paycodes(self, start_date, end_date, transaction_status='PAID', auth_token=None):
+    def fetch_paycodes(self, start_date, end_date, transactionStatus=None, transactionReference=None,
+                       beneficiaryName=None, auth_token=None):
         """
         Fetches all paycodes within a specified date range.
         Args:
             start_date (str): The start date for the date range.
             end_date (str): The end date for the date range.
             transaction_status (str, optional): The transaction status. Defaults to 'PAID'.
+            transactionReference (str, optional): The transaction reference. Defaults to None.
             auth_token (str, optional): The authentication token. Defaults to None.
         Returns:
             tuple: The status code and response from the Monnify API after fetching the paycodes.
             """
         
-        url_path = "/api/v1/paycode?from={start_date}&to={end_date}&transactionStatus={transaction_status}"
+        url_path = f"/api/v1/paycode?from={start_date}&to={end_date}"
+        if transactionStatus:
+            url_path += f"&transactionStatus={transactionStatus}"
+        if transactionReference:
+            url_path += f"&transactionReference={url_encoder.quote_plus(transactionReference)}"
+        if beneficiaryName:
+            url_path += f"&beneficiaryName={url_encoder.quote_plus(beneficiaryName)}"
         return self.do_get(url_path, auth_token)
     
     def delete_paycode(self, paycode_reference, auth_token=None):
