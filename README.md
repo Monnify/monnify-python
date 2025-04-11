@@ -143,13 +143,13 @@ settlement = monnify.Settlement
 
 # Create a sub-account
 
-data = {
+data = [{
     "bankCode": "057",
     "accountNumber": "1234567890",
     "email": "john.doe@example.com",
     "currencyCode": "NGN",
     "defaultSplitPercentage": 10.0
-}
+}]
 status_code, response = settlement.create_sub_account(data)
 ```
 
