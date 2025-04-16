@@ -23,6 +23,24 @@ Classes
 
 ### Methods
 
+`initiate_transfer(self, data, auth_token=None)`
+:   Initiates a single transfer disbursement.
+    
+    Args:
+        auth_token (str): The authentication token for the API.
+        data (dict): The data required for the transfer as outlined below:
+            reference (str): Unique reference for the transfer.
+            amount (decimal): Amount to be transferred.
+            narration (str): Description or narration for the transfer.
+            destinationBankCode (str): Bank code of the destination bank.
+            destinationAccountNumber (str): Account number of the destination account.
+            sourceAccountNumber (str): The wallet account number of the source account.
+            currency (str): Currency of the transfer, default is "NGN".
+            aync(Boolean): An optional parameter to enable aynchronous processing
+    
+    Returns:
+        tuple: The status code and response from the API after initiating the transfer.
+
 `authorize_transfer(self, data, auth_token=None)`
 :   Authorizes a transfer using the provided authentication token and data.
     
@@ -54,23 +72,6 @@ Classes
     
     Returns:
         tuple: The response from the API along with the status code of the request.
-
-`initiate_transfer(self, data, auth_token=None)`
-:   Initiates a single transfer disbursement.
-    
-    Args:
-        auth_token (str): The authentication token for the API.
-        data (dict): The data required for the transfer as outlined below:
-            reference (str): Unique reference for the transfer.
-            amount (decimal): Amount to be transferred.
-            narration (str): Description or narration for the transfer.
-            destinationBankCode (str): Bank code of the destination bank.
-            destinationAccountNumber (str): Account number of the destination account.
-            sourceAccountNumber (str): The wallet account number of the source account.
-            currency (str): Currency of the transfer, default is "NGN".
-    
-    Returns:
-        tuple: The status code and response from the API after initiating the transfer.
 
 `list_all_transfers(self, page=0, size=10, auth_token=None)`
 :   List all single disbursement transactions.

@@ -10,9 +10,9 @@ Classes
     Initialises the Base class
     
     Args:
-        API_KEY (str): _description_. Merchant API Key.
-        SECRET_KEY (str): _description_. Merchant Secret Key.
-        ENV (str): _description_. API environment, defaults to "SANDBOX".
+        API_KEY (str): Merchant API Key.
+        SECRET_KEY (str): Merchant Secret Key.
+        ENV (str): API environment, defaults to "SANDBOX".
     
     Raises:
         InvalidDataException
@@ -23,8 +23,30 @@ Classes
 
 ### Methods
 
+`initialize_transaction(self, data, auth_token=None) ‑> tuple`
+:   Initializes a transaction 
+    
+    Args:
+        auth_token (str): The authentication token for the API.
+        data (dict): The data required to initialize the transaction as outlined:
+            paymentReference (str): The payment reference, required.
+            amount (Decimal): The transaction amount, required.
+            customerName (str): The customer's name.
+            paymentDescription (str): The payment description, required with a minimum length of 3.
+            currencyCode (str): The currency code, default is "NGN".
+            contractCode (str): The merchant's contract code, required with a minimum length of 10 and must be numeric.
+            customerEmail (Email): The customer's email, required.
+            paymentMethods (list): List of supported payment methods.
+            redirectUrl (Url): The URL to redirect to after after payment completion.
+            metaData (dict): Metadata dictionary with string keys.
+            incomeSplitConfig (list): List of income split configurations.
+    
+    
+    Returns:
+        tuple: The status code and response from the API call.
+
 `authorize_otp(self, data, auth_token=None) ‑> tuple`
-:   Authorizes an OTP for a transaction.
+:   Authorizes an OTP for a card transaction.
     
     Args:
         auth_token (str): The authentication token for the request.
@@ -75,13 +97,23 @@ Classes
     Raises:
         ValidationError: If the provided data is invalid.
 
-`get_all_transactions(self, start_date, end_date, payment_status=None, page=0, size=10, auth_token=None) ‑> tuple`
+`get_all_transactions(self, start_date, end_date, page=0, size=10,payment_status=None, paymentReference=None,               transactionReference=None,fromAmount=None,toAmount=None, amount=None, customerName=None, customerEmail=None, auth_token=None) ‑> tuple`
 :   Retrieve all transactions with pagination.
     
     Args:
         auth_token (str): The authentication token for the API.
         page (int, optional): The page number to retrieve. Defaults to 0.
         size (int, optional): The number of transactions per page. Defaults to 10.
+        start_date (int): A unix timestamp in milliseconds of the start date for the transaction search.
+        end_date (int): A unix timestamp in milliseconds of the end date for the transaction search.
+        payment_status (str, optional): The status of the payment. Defaults to None.
+        paymentReference (str, optional): The merchant's generated payment reference to search for. Defaults to None.
+        transactionReference (str, optional): The Monnify transaction reference to search for. Defaults to None.
+        fromAmount (float, optional): The minimum amount for the transaction. Defaults to None.
+        toAmount (float, optional): The maximum amount for the transaction. Defaults to None.
+        amount (float, optional): The exact amount for the transaction. Defaults to None.
+        customerName (str, optional): The name of the customer. Defaults to None.
+        customerEmail (str, optional): The email of the customer. Defaults to None.
 
 `get_transaction_status(self, payment_reference=None, transaction_reference=None, auth_token=None) ‑> tuple`
 :   Get the status of a transaction.
@@ -110,27 +142,6 @@ Classes
     Returns:
         tuple: A tuple containing the response status and data from the API.
 
-`initialize_transaction(self, data, auth_token=None) ‑> tuple`
-:   Initializes a transaction 
-    
-    Args:
-        auth_token (str): The authentication token for the API.
-        data (dict): The data required to initialize the transaction as outlined:
-            paymentReference (str): The payment reference, required.
-            amount (Decimal): The transaction amount, required.
-            customerName (str): The customer's name.
-            paymentDescription (str): The payment description, required with a minimum length of 3.
-            currencyCode (str): The currency code, default is "NGN".
-            contractCode (str): The merchant's contract code, required with a minimum length of 10 and must be numeric.
-            customerEmail (Email): The customer's email, required.
-            paymentMethods (list): List of supported payment methods.
-            redirectUrl (Url): The redirect URL after payment completion.
-            metaData (dict): Metadata dictionary with string keys.
-            incomeSplitConfig (list): List of income split configurations.
-    
-    
-    Returns:
-        tuple: The status code and response from the API call.
 
 `pay_with_bank_transfer(self, data, auth_token=None) ‑> tuple`
 :   Initiates a payment using bank transfer.
@@ -181,9 +192,9 @@ Classes
     Initialises the Base class
     
     Args:
-        API_KEY (str): _description_. Merchant API Key.
-        SECRET_KEY (str): _description_. Merchant Secret Key.
-        ENV (str): _description_. API environment, defaults to "SANDBOX".
+        API_KEY (str): Merchant API Key.
+        SECRET_KEY (str): Merchant Secret Key.
+        ENV (str): API environment, defaults to "SANDBOX".
     
     Raises:
         InvalidDataException
@@ -194,15 +205,18 @@ Classes
 
   ### Methods
 
-  `get_all_refunds(self, start_date, end_date, page=0, size=10, auth_token=None)`
+  `get_all_refunds(self, start_date, end_date, page=0, size=10, transactionReference=None, refundStatus=None, auth_token=None)`
   :   Fetches all refunds within a specified date range.
       
       Args:
-          auth_token (str): The authentication token for the API, defaults to None.
-          page (int, optional): The page number to retrieve. Defaults to 0.
-          size (int, optional): The number of refunds per page. Defaults to 10.
-          start_date (int): A unix timestamp in milliseconds of the start date for the refund search.
-          end_date (int): A unix timestamp in milliseconds of the end date for the refund search.
+        auth_token (str): The authentication token for the API, defaults to None.
+        page (int, optional): The page number to retrieve. Defaults to 0.
+        size (int, optional): The number of refunds per page. Defaults to 10.
+        start_date (int): A unix timestamp in milliseconds of the start date for the refund search.
+        end_date (int): A unix timestamp in milliseconds of the end date for the refund search.
+        transactionReference (str, optional): The Monnify transaction reference to search for. Defaults to None.
+        refundStatus (str, optional): The status of the refund. Defaults to None.
+
       
       Returns:
           tuple: A tuple containing the response status and data from the API.

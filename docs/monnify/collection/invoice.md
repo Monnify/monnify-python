@@ -10,9 +10,9 @@ Classes
     Initialises the Base class
     
     Args:
-        API_KEY (str): _description_. Merchant API Key.
-        SECRET_KEY (str): _description_. Merchant Secret Key.
-        ENV (str): _description_. API environment, defaults to "SANDBOX".
+        API_KEY (str): Merchant API Key.
+        SECRET_KEY (str): Merchant Secret Key.
+        ENV (str): API environment, defaults to "SANDBOX".
     
     Raises:
         InvalidDataException
@@ -24,9 +24,7 @@ Classes
 ### Methods
 
 `cancel_invoice(self, invoice_reference, auth_token=None) ‑> tuple`
-:   Cancel an invoice.
-    
-    This method cancels an invoice using the provided invoice reference.
+:   This method cancels an invoice using the provided invoice reference.
     
     Args:
         auth_token (str): The authentication token required for the API request.

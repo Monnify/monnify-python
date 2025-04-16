@@ -42,7 +42,7 @@ Classes
 * monnify.settlement.sub_account.Settlement
 * monnify.verification.kyc_verification.Verification
 
-### Static methods
+### Class methods
 
 `reset_token_config()`
 :   Resets the token configuration
@@ -95,7 +95,7 @@ Classes
         Exception: A general exception
     
     Returns:
-        tuple: API status code, and a json response
+        tuple: API status code and a json response
 
 `do_post(self: object, url_path: str, data: dict, authorization: str = None) ‑> tuple`
 :   A low level POST request to the Monnify API
@@ -107,10 +107,10 @@ Classes
         data (dict): A dictionary of request payload to be sent to the API
     
     Raises:
-        UnprocessableRequestException: _description_
-        GatewayException: _description_
-        RequestException: _description_
-        Exception: _description_
+        UnprocessableRequestException: This is thrown when the API request cannot be processed
+        GatewayException: This is thrown when there's a server error with the API
+        RequestException: This is thrown when there's an issue with the API request
+        Exception: A general exception
     
     Returns:
         tuple: API status code, and a json response
@@ -125,13 +125,13 @@ Classes
         data (dict): A dictionary of request payload to be sent to the API
     
     Raises:
-        UnprocessableRequestException: _description_
-        GatewayException: _description_
-        RequestException: _description_
-        Exception: _description_
+        UnprocessableRequestException: This is thrown when the API request cannot be processed
+        GatewayException: This is thrown when there's a server error with the API
+        RequestException: This is thrown when there's an issue with the API request
+        Exception: A general exception
     
     Returns:
-        tuple: API status code, and a json response
+        tuple: API status code and a json response
 
 `get_auth_token(self, cache: bool = True) ‑> tuple`
 :   Retrieves access token from Monnify
@@ -143,4 +143,4 @@ Classes
         Exception: A general exception
     
     Returns:
-        _type_: A tuple of API status code, and a json response
+        tuple: API status code and a json response

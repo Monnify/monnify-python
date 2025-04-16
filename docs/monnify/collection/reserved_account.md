@@ -10,9 +10,9 @@ Classes
     Initialises the Base class
     
     Args:
-        API_KEY (str): _description_. Merchant API Key.
-        SECRET_KEY (str): _description_. Merchant Secret Key.
-        ENV (str): _description_. API environment, defaults to "SANDBOX".
+        API_KEY (str): Merchant API Key.
+        SECRET_KEY (str): Merchant Secret Key.
+        ENV (str): API environment, defaults to "SANDBOX".
     
     Raises:
         InvalidDataException
@@ -83,7 +83,7 @@ Classes
     
     Args:
         auth_token (str): The authentication token required for the API request.
-        account_reference (str): The reference identifier for the reserved account.
+        account_reference (str): The reference used to create the reserved account.
     
     Returns:
         tuple: The status code and details of the reserved account as returned by the API.

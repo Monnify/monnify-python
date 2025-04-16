@@ -1,4 +1,4 @@
-# pymonnify
+# monnify-python
 A Monnify Python Library
 
 ## Overview
@@ -172,4 +172,4 @@ status_code, response = verification.verify_bvn(data)
 
 ## Documentation
 
-You can view full library documentation [here](docs/monnify/index.md)
+You can view full library documentation [here](https://github.com/monnify/monnify-python/docs/monnify/index.md)

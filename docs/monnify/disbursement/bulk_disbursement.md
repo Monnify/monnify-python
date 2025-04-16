@@ -10,9 +10,9 @@ Classes
     Initialises the Base class
     
     Args:
-        API_KEY (str): _description_. Merchant API Key.
-        SECRET_KEY (str): _description_. Merchant Secret Key.
-        ENV (str): _description_. API environment, defaults to "SANDBOX".
+        API_KEY (str): Merchant API Key.
+        SECRET_KEY (str): Merchant Secret Key.
+        ENV (str): API environment, defaults to "SANDBOX".
     
     Raises:
         InvalidDataException
@@ -22,6 +22,24 @@ Classes
 * monnify.base.Base
 
 ### Methods
+
+`initiate_transfer(self, data, auth_token=None)`
+:   Initiates a bulk transfer.
+    
+    Args:
+        auth_token (str): The authentication token for the API.
+        data (dict): The data for the bulk transfer as outlined below:
+            batchReference (str): The batch reference for the bulk transfer.
+            narration (str): The narration for the bulk transfer.
+            title (str): The title for the bulk transfer.
+            currency (str): The currency for the bulk transfer, default is "NGN".
+            sourceAccountNumber (str): The merchant wallet account number.
+            onValidationFailure (str): Action on validation failure, default is "CONTINUE".
+            notificationInterval (int): Notification interval, default is 25.
+            transactionList (list): List of transactions in the bulk transfer.
+    
+    Returns:
+        tuple: The status code and response from the API after initiating the bulk transfer.
 
 `authorize_transfer(self, data, auth_token=None)`
 :   Authorizes a transfer using the provided authentication token and data.
@@ -45,24 +63,6 @@ Classes
     Returns:
         tuple: The response from the API along with the status of the bulk transfer.
 
-`initiate_transfer(self, data, auth_token=None)`
-:   Initiates a bulk transfer.
-    
-    Args:
-        auth_token (str): The authentication token for the API.
-        data (dict): The data for the bulk transfer as outlined below:
-            batchReference (str): The batch reference for the bulk transfer.
-            narration (str): The narration for the bulk transfer.
-            title (str): The title for the bulk transfer.
-            currency (str): The currency for the bulk transfer, default is "NGN".
-            sourceAccountNumber (str): The merchant wallet account number.
-            onValidationFailure (str): Action on validation failure, default is "CONTINUE".
-            notificationInterval (int): Notification interval, default is 25.
-            transactionList (list): List of transactions in the bulk transfer.
-    
-    Returns:
-        tuple: The status code and response from the API after initiating the bulk transfer.
-
 `resend_otp(self, data, auth_token=None)`
 :   Resend OTP for a disbursement transaction.
     
@@ -74,12 +74,19 @@ Classes
     Returns:
         tuple: The status code and response from the API after attempting to resend the OTP.
 
-`search_transactions(self, wallet_account_number, auth_token=None)`
+`search_transactions(self, wallet_account_number, pageNo=0,pageSize=10,transactionReference=None, startDate=None, endDate=None, amountFrom=None, amountTo=None, auth_token=None)`
 :   Search for transactions associated with a specific wallet account number.
     
     Args:
         auth_token (str): The authentication token required for the API request.
         wallet_account_number (str): The wallet account number of the merchant.
-    
+        pageNo (int): The page number to retrieve.
+        pageSize (int): The number of records per page.
+        transactionReference (str, optional): The reference for the transaction.
+        startDate (str, optional): The start date for the search.
+        endDate (str, optional): The end date for the search.
+        amountFrom (float, optional): The minimum amount for the transaction.
+        amountTo (float, optional): The maximum amount for the transaction.
+
     Returns:
         tuple: The status code and response from the API containing the transaction details.

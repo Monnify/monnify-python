@@ -74,3 +74,23 @@ Classes
     
     Returns:
         tuple: The status and response from the Monnify API containing the verification result.
+    
+
+`get_banks(self, auth_token=None)`
+:   Retrieve a list of CBN supported banks.
+
+    Args:
+        auth_token (str): The authentication token required for the API request.
+        
+    Returns:
+        tuple: The status code and response from the API containing the list of banks.
+
+
+`get_banks_with_ussd(self, auth_token=None)`
+:   Retrieve a list of CBN supported banks with their USSD codes.
+
+    Args:
+        auth_token (str): The authentication token required for the API request.
+
+    Returns:
+        tuple: The status code and response from the API containing the list of banks with USSD codes.
