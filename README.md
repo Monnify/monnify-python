@@ -9,13 +9,11 @@ A Monnify Python Library
 
 To install the library, use pip:
 
-After publication do:
-
 ```sh
 pip install monnify-python
 ```
 
-For testing do:
+For dev testing do:
 ```sh
 git clone https://github.com/Monnify/monnify-python
 
@@ -172,4 +170,4 @@ status_code, response = verification.verify_bvn(data)
 
 ## Documentation
 
-You can view full library documentation [here](https://github.com/monnify/monnify-python/docs/monnify/index.md)
+You can view full library documentation [here](https://github.com/Monnify/monnify-python/tree/main/docs/monnify)
