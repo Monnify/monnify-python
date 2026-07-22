@@ -7,8 +7,8 @@ from monnify.base import Base
 
 @pytest.fixture(autouse=True, scope="package")
 def preset_env():
-    os.environ["API_KEY"] = "MK_TEST_JRQAZRFD2W"
-    os.environ["SECRET_KEY"] = "T2CTRSB758NT2RATE17CV0Y9BSH4KCCB"
+    os.environ["API_KEY"] = "MK_TEST_MRP986PBE2"
+    os.environ["SECRET_KEY"] = "JDY8NGX46ZB21W83ZF202914V14Y8TCK"
     os.environ.ENV = "SANDBOX"
 
 
