@@ -93,7 +93,7 @@ class Verification(Base):
             tuple: The status code and response from the API containing the validation result.
     """
 
-        url_path = f"/api/v1/disbursements/account/validate?accountNumber={account_number}&bankCode={bank_code}"
+        url_path = f"/api/v2/disbursements/account/validate?accountNumber={account_number}&bankCode={bank_code}"
         return self.do_get(url_path, auth_token)
     
     def get_banks(self, auth_token=None):

@@ -22,6 +22,7 @@ class SingleTransferSchema(Schema):
         narration (str): Description or narration for the transfer.
         destinationBankCode (str): Bank code of the destination bank.
         destinationAccountNumber (str): Account number of the destination account.
+        destinationAccountName (str): Name of the destination account holder.
         sourceAccountNumber (str): The wallet account number of the source account.
         currency (str): Currency of the transfer, default is "NGN".
     """
@@ -33,6 +34,7 @@ class SingleTransferSchema(Schema):
     destinationAccountNumber = fields.Str(
         required=True, validate=[validate.Length(min=10, max=10), is_numeric]
     )
+    destinationAccountName = fields.Str(required=True)
     sourceAccountNumber = fields.Str(
         required=True, validate=[validate.Length(min=10, max=10), is_numeric]
     )

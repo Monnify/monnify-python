@@ -31,6 +31,7 @@ class DisbursementSingle(Base):
                 narration (str): Description or narration for the transfer.
                 destinationBankCode (str): Bank code of the destination bank.
                 destinationAccountNumber (str): Account number of the destination account.
+                destinationAccountName (str): Name of the destination account holder.
                 sourceAccountNumber (str): The wallet account number of the source account.
                 currency (str): Currency of the transfer, default is "NGN".
                 async (bool): Whether to process the transfer asynchronously, default is False.
@@ -40,6 +41,7 @@ class DisbursementSingle(Base):
         """
 
         validated_data = SingleTransferSchema().load(data)
+        print(validated_data)  
 
         url_path = "/api/v2/disbursements/single"
         return self.do_post(url_path, validated_data, auth_token)
